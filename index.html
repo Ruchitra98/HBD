@@ -10,34 +10,37 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
  
 <style>
-  :root{
-    --ink:#0b1224;
-    --ink-deep:#070c18;
-    --gold:#f2b544;
-    --gold-soft:#f7d488;
-    --coral:#ff7a5c;
-    --paper:#f6efe3;
-    --line:rgba(242,181,68,0.28);
-  }
  
+
+:root{
+  --ink:#2d1b4e;          /* deep dusky purple background */
+  --ink-deep:#1a0f30;      /* darker purple for depth */
+  --gold:#ff9a56;          /* warm sunset orange */
+  --gold-soft:#ffc17a;     /* golden peach */
+  --coral:#ff5e7e;         /* sunset pink */
+  --paper:#fff0e6;         /* warm cream text */
+  --line:rgba(255,154,86,0.32);
+}
+
   *{ margin:0; padding:0; box-sizing:border-box; }
  
   html,body{ height:100%; }
  
-  body{
-    font-family:'Caveat',cursive;
-    background:
-      radial-gradient(circle at 20% 15%, rgba(242,181,68,0.10), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(255,122,92,0.10), transparent 45%),
-      var(--ink);
-    color:var(--paper);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow-x:hidden;
-    position:relative;
-  }
+ body{
+  font-family:'Caveat',cursive;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(255,94,126,0.35), transparent 55%),
+    radial-gradient(circle at 20% 20%, rgba(255,154,86,0.25), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255,193,122,0.20), transparent 50%),
+    linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 100%);
+  color:var(--paper);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow-x:hidden;
+  position:relative;
+}
  
   /* ambient stars */
   .stars{
@@ -46,15 +49,18 @@
     pointer-events:none;
     z-index:0;
   }
+  
   .stars span{
-    position:absolute;
-    width:2px;
-    height:2px;
-    background:var(--gold-soft);
-    border-radius:50%;
-    opacity:0.5;
-    animation:twinkle 3.5s ease-in-out infinite;
-  }
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:var(--gold-soft);
+  border-radius:50%;
+  opacity:0.5;
+  animation:twinkle 3.5s ease-in-out infinite;
+}
+
+
   @keyframes twinkle{
     0%,100%{ opacity:0.15; }
     50%{ opacity:0.85; }
@@ -129,13 +135,13 @@
   }
  
   .candle{
-    width:26px;
-    height:100px;
-    background:linear-gradient(180deg, var(--coral), #c8452e);
-    border-radius:6px;
-    position:relative;
-    box-shadow: inset -4px 0 8px rgba(0,0,0,0.25);
-  }
+  width:26px;
+  height:100px;
+  background:linear-gradient(180deg, var(--coral), #c23e5c);
+  border-radius:6px;
+  position:relative;
+  box-shadow: inset -4px 0 8px rgba(0,0,0,0.25);
+}
  
   .candle::before{
     content:"";
@@ -231,28 +237,28 @@
     100%{ transform:translateY(-115vh) translateX(var(--drift,0px)) rotate(var(--tilt,0deg)); opacity:0; }
   }
  
-  button{
-    font-family:'Caveat',cursive;
-    font-weight:500;
-    padding:15px 34px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    margin-top:34px;
-    font-size:15px;
-    letter-spacing:0.02em;
-    cursor:pointer;
-    background:transparent;
-    color:var(--gold-soft);
-    transition:0.35s ease;
-  }
- 
-  button:hover{
-    background:var(--gold);
-    color:var(--ink-deep);
-    border-color:var(--gold);
-    transform:translateY(-2px);
-  }
- 
+button{
+  font-family:'Caveat',cursive;
+  font-weight:500;
+  padding:15px 34px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  margin-top:34px;
+  font-size:15px;
+  letter-spacing:0.02em;
+  cursor:pointer;
+  background:rgba(255,255,255,0.5);
+  color:var(--paper);
+  transition:0.35s ease;
+}
+
+button:hover{
+  background:var(--gold);
+  color:#fff;
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+
   .cards{
     display:flex;
     justify-content:center;
@@ -535,7 +541,7 @@ Happy Birthday to one of the most amazing friend I know.
  
   function launchBalloons(count){
     const field = document.getElementById("balloonField");
-    const colors = ["#ff7a5c", "#f2b544", "#f7d488", "#6fb7a8", "#e2618f", "#8ea7e8"];
+    const colors = ["#ff5e7e", "#ff9a56", "#ffc17a", "#f4837a", "#c23e5c", "#ffb385"];
  
     for (let i = 0; i < count; i++){
       const b = document.createElement("div");
