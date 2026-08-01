@@ -386,16 +386,16 @@
         This file lives directly inside the HBD folder, along with the photos:
           HBD/
             balaji_birthday.html
-            1.jpg
-            2.jpg
-            3.jpg
+            Photo1.jpg
+            Photo2.jpg
+            Photo3.jpg
         Since the photos sit right next to this HTML file, the paths below
         are just the filenames themselves — no subfolder needed.
       -->
       
-      <img src="1.jpg" alt="Cuite Memories">
-      <img src="2.jpg" alt="Cuite Memories">
-      <img src="3.jpg" alt="Cuite Memories">
+      <img src="HBD/1.jpg" alt="Cuite Memories">
+      <img src="HBD/2.jpg" alt="Cuite Memories">
+      <img src="HBD/3.jpg" alt="Cuite Memories">
     </div>
     <button onclick="nextSlide()">Choose your gift🎁</button>
   </div>
@@ -500,6 +500,27 @@
     }
   }
  
+  function onFormSubmitHandler(e) {
+  // e.response gives you the submitted response object
+  const formResponse = e.response;
+  const itemResponses = formResponse.getItemResponses();
+
+  // Build a readable summary of every question + answer
+  let message = "Balaji just submitted the form! 🎉\n\n";
+  itemResponses.forEach(function (itemResponse) {
+    const question = itemResponse.getItem().getTitle();
+    const answer = itemResponse.getResponse();
+    message += question + ": " + answer + "\n\n";
+  });
+
+  // Send it to your own email
+  MailApp.sendEmail({
+    to: "ruchitra17@gmail.com",
+    subject: "🎁 New response on Balaji's Birthday Form",
+    body: Message
+  });
+}
+
   // ambient stars
   (function makeStars(){
     const container = document.getElementById("stars");
