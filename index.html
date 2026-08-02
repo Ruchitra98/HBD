@@ -534,6 +534,105 @@ button:hover{
   margin-top:10px;
 }
 
+/* --- gift form modal --- */
+.form-modal{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(15,8,28,0.82);
+  backdrop-filter:blur(3px);
+}
+
+.form-modal.show{ display:flex; }
+
+.form-modal-inner{
+  position:relative;
+  width:min(92vw, 520px);
+  height:min(82vh, 640px);
+  background:var(--paper);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 30px 70px rgba(0,0,0,0.55);
+  display:flex;
+  flex-direction:column;
+}
+
+.form-modal-iframe{
+  flex:1;
+  width:100%;
+  border:none;
+}
+
+.form-modal-close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:2;
+  width:32px;
+  height:32px;
+  padding:0;
+  margin:0;
+  border-radius:50%;
+  background:rgba(45,27,78,0.85);
+  color:var(--paper);
+  border:none;
+  font-family:inherit;
+  font-size:15px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.form-modal-fallback{
+  margin:0;
+  border:none;
+  border-radius:0;
+  padding:12px;
+  font-size:14px;
+  background:var(--ink);
+  color:var(--gold-soft);
+}
+
+.form-modal-fallback:hover{
+  background:var(--ink-deep);
+  color:var(--gold-soft);
+  transform:none;
+}
+
+/* --- thank-you overlay shown right after submit --- */
+.form-thanks{
+  position:fixed;
+  inset:0;
+  z-index:51;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  background:rgba(15,8,28,0.92);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.5s ease;
+}
+
+.form-thanks.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.form-thanks-emoji{
+  font-size:60px;
+  animation:giftBounce 1.2s ease-in-out infinite;
+}
+
+.form-thanks p{
+  font-size:20px;
+  color:var(--paper);
+  max-width:80%;
+}
+
 </style>
 </head>
 
@@ -547,7 +646,7 @@ button:hover{
 
 <!-- Slide 0: Ribbon-Cutting Intro -->
 <div class="slide active" id="slide0">
-  <div class="eyebrow"></div>
+  <div class="eyebrow">Something's waiting for you</div>
   <h1>Cut the ribbon<br><span class="accent">to begin</span></h1>
   <div class="ribbon-stage" id="ribbonStage" onclick="cutRibbon()">
     <div class="ribbon-half ribbon-left"></div>
@@ -561,7 +660,7 @@ button:hover{
   <!-- Slide 1 -->
   <div class="slide" id="slide1">
     <div class="eyebrow">A little something for you</div>
-    <h2> <span class="accent"> Happy Birthday <br> Dear Balaji ✨</span></h2>
+    <h1>Happy Birthday🎂🎈<br><span class="accent">Dear Balaji ❤️✨</span></h1>
     <div class="candle-wrap" onclick="blowCandle()">
       <div class="candle"><div class="flame" id="flame"></div></div>
     </div>
@@ -572,11 +671,13 @@ button:hover{
   <!-- Slide 2 -->
   <div class="slide" id="slide2">
     <div class="eyebrow">Dear Balaji</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);"><span class="accent"> A few things worth saying</span></h1>
-    <p> <h3> Happy Birthday to one of the most amazing friend I know.
+    <h1 style="font-size:clamp(30px,5vw,44px);">A few things<br><span class="accent">worth saying</span></h1>
+    <p>
+
+Happy Birthday to one of the most amazing friend I know.
       Thank you for all the laughs, memories, and moments that made life better.
       May this year bring you success, happiness, adventures, and everything you've been working for.
-      And thank you for showing up for me every time I needed you. </h3>
+      And thank you for showing up for me every time I needed you.
 
     </p>
     <button onclick="nextSlide()">Keep going</button>
@@ -616,7 +717,7 @@ button:hover{
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji"> 📸</span>
+            <span class="wrap-emoji">📖</span>
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
@@ -630,7 +731,7 @@ button:hover{
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📸</span>
+            <span class="wrap-emoji">📖</span>
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
@@ -644,7 +745,7 @@ button:hover{
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📸</span>
+            <span class="wrap-emoji">📖</span>
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
@@ -658,12 +759,12 @@ button:hover{
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📸</span>
+            <span class="wrap-emoji">📖</span>
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
             <div class="flip-front"><img src="4.jpg" alt="Cuite Memories"></div>
-            <div class="flip-back"><p>The dish we ordered at Applebee's turned out extraordinary by giving must try again feelzz 💛</p></div>
+            <div class="flip-back"><p>The dish we ordered at Applebee's turned out extraordinary — must try again 💛</p></div>
           </div>
         </div>
         <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
@@ -677,7 +778,20 @@ button:hover{
     <div class="eyebrow">Last one</div>
     <h1 style="font-size:clamp(30px,5vw,44px);">One last <span class="accent">surprise</span></h1>
     <p>I have something special planned for you.<br>Choose your gift and wait for the surprise.</p>
-    <button onclick="openGiftForm()"> 🔓🎁 Open My Secret Gift </button>
+    <button onclick="openGiftModal()"> 🔓🎁 Open My Secret Gift </button>
+  </div>
+
+  <!-- Gift form modal: keeps the form on this page so we can tell when it's been submitted -->
+  <div class="form-modal" id="giftModal">
+    <div class="form-modal-inner">
+      <button class="form-modal-close" onclick="closeGiftModal()">✕</button>
+      <iframe id="giftFormFrame" class="form-modal-iframe" title="Gift form"></iframe>
+      <button class="form-modal-fallback" onclick="showSubmittedThanks()">I've submitted ✅</button>
+    </div>
+    <div class="form-thanks" id="giftThanks">
+      <div class="form-thanks-emoji">🎉</div>
+      <p>Thank you! Your gift choice has been received.</p>
+    </div>
   </div>
 
   <!-- Slide 6 -->
@@ -735,11 +849,65 @@ button:hover{
     goToSlide(current + 1);
   }
 
-  function openGiftForm(){
-    const googleFormLink = "https://forms.gle/ha7kToLsAgSj4NYw5";
-    window.open(googleFormLink, "_blank");
-    nextSlide();
+  /* ============ gift form modal: open, detect submit, thank you, advance ============ */
+
+  // Google Form link — for the cleanest in-page look, swap this for the
+  // long "docs.google.com/forms/d/e/.../viewform?embedded=true" URL from
+  // the form's Send > <> Embed HTML option. The forms.gle short link also
+  // works, it just renders with the normal (non-embedded) form styling.
+  const googleFormLink = "https://forms.gle/ha7kToLsAgSj4NYw5";
+
+  let giftFormLoadCount = 0;
+  let giftFormSubmitted = false;
+
+  function openGiftModal(){
+    giftFormLoadCount = 0;
+    giftFormSubmitted = false;
+
+    const modal = document.getElementById("giftModal");
+    const iframe = document.getElementById("giftFormFrame");
+    if (!modal || !iframe) return;
+
+    iframe.src = googleFormLink;
+    modal.classList.add("show");
   }
+
+  function closeGiftModal(){
+    const modal = document.getElementById("giftModal");
+    if (modal) modal.classList.remove("show");
+  }
+
+  // The iframe fires a "load" event once for the form itself, and again
+  // when Google Forms navigates it to the "response recorded" page after
+  // he hits submit — that second load is our signal.
+  document.addEventListener("DOMContentLoaded", () => {
+    const iframe = document.getElementById("giftFormFrame");
+    if (!iframe) return;
+    iframe.addEventListener("load", () => {
+      giftFormLoadCount++;
+      if (giftFormLoadCount >= 2){
+        showSubmittedThanks();
+      }
+    });
+  });
+
+  function showSubmittedThanks(){
+    if (giftFormSubmitted) return;
+    giftFormSubmitted = true;
+
+    const thanks = document.getElementById("giftThanks");
+    if (thanks) thanks.classList.add("show");
+
+    launchBalloons(10);
+
+    setTimeout(() => {
+      closeGiftModal();
+      if (thanks) thanks.classList.remove("show");
+      goToSlide(6);
+    }, 1700);
+  }
+
+  /* ============ end gift form modal logic ============ */
 
   let candleBlown = false;
 
