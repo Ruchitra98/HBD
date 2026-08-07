@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Suprise </title>
+<title>Birthday Surprise</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -259,6 +259,17 @@ button:hover{
   transform:translateY(-2px);
 }
 
+button:disabled{
+  opacity:0.45;
+  cursor:not-allowed;
+}
+button:disabled:hover{
+  background:rgba(255,255,255,0.5);
+  color:var(--paper);
+  border-color:var(--line);
+  transform:none;
+}
+
   .cards{
     display:flex;
     justify-content:center;
@@ -292,7 +303,7 @@ button:hover{
     flex-wrap:wrap;
   }
 
-  /* ============ NEW: gift-wrapped, flippable photo cards ============ */
+  /* ============ gift-wrapped, flippable photo cards ============ */
 
   .photo-card{
     display:flex;
@@ -419,7 +430,7 @@ button:hover{
     pointer-events:auto;
   }
 
-  /* ============ end new gallery styles ============ */
+  /* ============ end gallery styles ============ */
 
   /* progress dots */
   .dots{
@@ -534,103 +545,86 @@ button:hover{
   margin-top:10px;
 }
 
-/* --- gift form modal --- */
-.form-modal{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(15,8,28,0.82);
-  backdrop-filter:blur(3px);
-}
-
-.form-modal.show{ display:flex; }
-
-.form-modal-inner{
-  position:relative;
-  width:min(92vw, 520px);
-  height:min(82vh, 640px);
-  background:var(--paper);
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 30px 70px rgba(0,0,0,0.55);
+/* --- in-page gift picker (image tiles) --- */
+.gift-options{
   display:flex;
-  flex-direction:column;
+  justify-content:center;
+  gap:22px;
+  margin-top:34px;
+  flex-wrap:wrap;
 }
 
-.form-modal-iframe{
-  flex:1;
-  width:100%;
-  border:none;
-}
-
-.form-modal-close{
-  position:absolute;
-  top:10px;
-  right:10px;
-  z-index:2;
-  width:32px;
-  height:32px;
-  padding:0;
-  margin:0;
-  border-radius:50%;
-  background:rgba(45,27,78,0.85);
-  color:var(--paper);
-  border:none;
-  font-family:inherit;
-  font-size:15px;
-  line-height:1;
+.gift-option{
   cursor:pointer;
 }
 
-.form-modal-fallback{
-  margin:0;
-  border:none;
-  border-radius:0;
-  padding:12px;
-  font-size:14px;
-  background:var(--ink);
-  color:var(--gold-soft);
+.gift-option input{
+  position:absolute;
+  opacity:0;
+  width:0;
+  height:0;
 }
 
-.form-modal-fallback:hover{
-  background:var(--ink-deep);
-  color:var(--gold-soft);
-  transform:none;
-}
-
-/* --- thank-you overlay shown right after submit --- */
-.form-thanks{
-  position:fixed;
-  inset:0;
-  z-index:51;
+.gift-option-card{
   display:flex;
   flex-direction:column;
   align-items:center;
+  width:150px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(242,181,68,0.06);
+  overflow:hidden;
+  transition:0.25s ease;
+}
+
+.gift-option-card .gift-img-wrap{
+  width:100%;
+  height:150px;
+  overflow:hidden;
+  background:rgba(0,0,0,0.15);
+  display:flex;
+  align-items:center;
   justify-content:center;
-  gap:14px;
-  background:rgba(15,8,28,0.92);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.5s ease;
 }
 
-.form-thanks.show{
-  opacity:1;
-  pointer-events:auto;
+.gift-option-card .gift-img-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-.form-thanks-emoji{
-  font-size:60px;
-  animation:giftBounce 1.2s ease-in-out infinite;
+.gift-option-card .gift-label{
+  padding:12px 8px;
+  font-size:17px;
+  color:var(--gold-soft);
 }
 
-.form-thanks p{
-  font-size:20px;
+.gift-option input:checked + .gift-option-card{
+  border-color:var(--coral);
+  transform:translateY(-5px);
+  box-shadow:0 12px 26px rgba(255,94,126,0.3);
+}
+
+.gift-option input:checked + .gift-option-card .gift-label{
   color:var(--paper);
-  max-width:80%;
+  font-weight:600;
+}
+
+.gift-option input:checked + .gift-option-card::after{
+  content:"✓";
+}
+
+.gift-option input:disabled + .gift-option-card{
+  opacity:0.4;
+  cursor:not-allowed;
+}
+
+.gift-status{
+  font-size:15px;
+  color:var(--gold-soft);
+  margin-top:18px;
+  min-height:20px;
 }
 
 </style>
@@ -647,7 +641,7 @@ button:hover{
 <!-- Slide 0: Ribbon-Cutting Intro -->
 <div class="slide active" id="slide0">
   <div class="eyebrow">Some Surprise is waiting for you </div>
-  <h1><span class="accent"> Cut the ribbon to begin B'day suprise 🧁</span></h1>
+  <h1><span class="accent"> Cut the ribbon to begin B'day surprise 🧁</span></h1>
   <div class="ribbon-stage" id="ribbonStage" onclick="cutRibbon()">
     <div class="ribbon-half ribbon-left"></div>
     <div class="ribbon-bow">🎀</div>
@@ -707,6 +701,9 @@ Happy Birthday to one of the most amazing friend I know.
             2.jpg
             3.jpg
             4.jpg
+            wallet.jpg
+            cake.jpg
+            perfume.jpg
         Since the photos sit right next to this HTML file, the paths below
         are just the filenames themselves — no subfolder needed.
 
@@ -721,7 +718,7 @@ Happy Birthday to one of the most amazing friend I know.
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
-            <div class="flip-front"><img src="1.jpg" alt="Cuite Memories"></div>
+            <div class="flip-front"><img src="1.jpg" alt="Cute Memories"></div>
             <div class="flip-back"><p>1st time at AppleBee's confused what food to order, makes me laugh when I look back at it 😂</p></div>
           </div>
         </div>
@@ -735,7 +732,7 @@ Happy Birthday to one of the most amazing friend I know.
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
-            <div class="flip-front"><img src="2.jpg" alt="Cuite Memories"></div>
+            <div class="flip-front"><img src="2.jpg" alt="Cute Memories"></div>
             <div class="flip-back"><p>This one always makes me laugh when I look back at it 😂</p></div>
           </div>
         </div>
@@ -749,7 +746,7 @@ Happy Birthday to one of the most amazing friend I know.
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
-            <div class="flip-front"><img src="3.jpg" alt="Cuite Memories"></div>
+            <div class="flip-front"><img src="3.jpg" alt="Cute Memories"></div>
             <div class="flip-back"><p>One of my favorite days with you, hands down 💛</p></div>
           </div>
         </div>
@@ -763,7 +760,7 @@ Happy Birthday to one of the most amazing friend I know.
             <span class="wrap-label">Unwrap Me!</span>
           </div>
           <div class="flip-inner">
-            <div class="flip-front"><img src="4.jpg" alt="Cuite Memories"></div>
+            <div class="flip-front"><img src="4.jpg" alt="Cute Memories"></div>
             <div class="flip-back"><p>The dish we ordered at Applebee's turned out extraordinary — must try again 💛</p></div>
           </div>
         </div>
@@ -773,25 +770,47 @@ Happy Birthday to one of the most amazing friend I know.
     <button onclick="nextSlide()">Click here to choose your gift🎁</button>
   </div>
 
-  <!-- Slide 5 -->
+  <!-- Slide 5: In-page gift picker with images -->
   <div class="slide" id="slide5">
     <div class="eyebrow">Last one</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">One last <span class="accent">surprise</span></h1>
-    <p>I have something special planned for you.<br>Choose your gift and wait for the surprise.</p>
-    <button onclick="openGiftModal()"> 🔓🎁 Open My Secret Gift </button>
-  </div>
+    <h1 style="font-size:clamp(30px,5vw,44px);">Choose any <span class="accent">two gifts</span></h1>
+    <p>Tap on two of the gifts below, then hit submit.</p>
 
-  <!-- Gift form modal: keeps the form on this page so we can tell when it's been submitted -->
-  <div class="form-modal" id="giftModal">
-    <div class="form-modal-inner">
-      <button class="form-modal-close" onclick="closeGiftModal()">✕</button>
-      <iframe id="giftFormFrame" class="form-modal-iframe" title="Gift form"></iframe>
-      <button class="form-modal-fallback" onclick="showSubmittedThanks()">I've submitted ✅</button>
-    </div>
-    <div class="form-thanks" id="giftThanks">
-      <div class="form-thanks-emoji">🎉</div>
-      <p>Thank you! Your gift choice has been received.</p>
-    </div>
+    <!-- Netlify Forms auto-detects this at deploy time because of
+         data-netlify="true". Submissions (and an email, once you turn on
+         notifications in your Netlify dashboard) go straight to you —
+         no external Google Form needed. -->
+    <form id="giftForm" name="gift-choice" method="POST" data-netlify="true" onsubmit="return handleGiftSubmit(event)">
+      <input type="hidden" name="form-name" value="gift-choice">
+
+      <div class="gift-options" id="giftOptions">
+        <label class="gift-option">
+          <input type="checkbox" name="gift" value="Wallet" onchange="limitGiftChoices()">
+          <span class="gift-option-card">
+            <span class="gift-img-wrap"><img src="HBD/22.jpg" alt="Wallet"></span>
+            <span class="gift-label">Wallet</span>
+          </span>
+        </label>
+        <label class="gift-option">
+          <input type="checkbox" name="gift" value="Cake" onchange="limitGiftChoices()">
+          <span class="gift-option-card">
+            <span class="gift-img-wrap"><img src="HBD/11.jpg" alt="Cake"></span>
+            <span class="gift-label">Cake</span>
+          </span>
+        </label>
+        <label class="gift-option">
+          <input type="checkbox" name="gift" value="Perfume" onchange="limitGiftChoices()">
+          <span class="gift-option-card">
+            <span class="gift-img-wrap"><img src="HBD/33.jpg" alt="Perfume"></span>
+            <span class="gift-label">Perfume</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="gift-status" id="giftStatus">Pick 2 options</div>
+
+      <button type="submit" id="giftSubmitBtn" disabled>Submit my choice 🎁</button>
+    </form>
   </div>
 
   <!-- Slide 6 -->
@@ -806,6 +825,15 @@ Happy Birthday to one of the most amazing friend I know.
   <div class="dots" id="dots"></div>
 
 </div>
+
+<!-- Hidden static form: Netlify scans the built HTML for this exact markup
+     at deploy time to register the form. It must match the visible form's
+     name and fields, or Netlify won't detect it. Do not remove. -->
+<form name="gift-choice" data-netlify="true" hidden>
+  <input type="checkbox" name="gift" value="Wallet">
+  <input type="checkbox" name="gift" value="Cake">
+  <input type="checkbox" name="gift" value="Perfume">
+</form>
 
 <!----Javascript---->
 
@@ -843,71 +871,70 @@ Happy Birthday to one of the most amazing friend I know.
     current = n;
     document.getElementById("slide" + current).classList.add("active");
     renderDots();
+    if (n === 6){
+      launchBalloons(10);
+    }
   }
 
   function nextSlide(){
     goToSlide(current + 1);
   }
 
-  /* ============ gift form modal: open, detect submit, thank you, advance ============ */
+  /* ============ in-page gift picker ============ */
 
-  // Google Form link — for the cleanest in-page look, swap this for the
-  // long "docs.google.com/forms/d/e/.../viewform?embedded=true" URL from
-  // the form's Send > <> Embed HTML option. The forms.gle short link also
-  // works, it just renders with the normal (non-embedded) form styling.
-  const googleFormLink = "https://forms.gle/ha7kToLsAgSj4NYw5";
+  // Cap selection at 2 checkboxes — once 2 are checked, grey out the rest.
+  function limitGiftChoices(){
+    const checkboxes = document.querySelectorAll('#giftOptions input[type="checkbox"]');
+    const checked = document.querySelectorAll('#giftOptions input[type="checkbox"]:checked');
+    const status = document.getElementById("giftStatus");
+    const submitBtn = document.getElementById("giftSubmitBtn");
 
-  let giftFormLoadCount = 0;
-  let giftFormSubmitted = false;
-
-  function openGiftModal(){
-    giftFormLoadCount = 0;
-    giftFormSubmitted = false;
-
-    const modal = document.getElementById("giftModal");
-    const iframe = document.getElementById("giftFormFrame");
-    if (!modal || !iframe) return;
-
-    iframe.src = googleFormLink;
-    modal.classList.add("show");
-  }
-
-  function closeGiftModal(){
-    const modal = document.getElementById("giftModal");
-    if (modal) modal.classList.remove("show");
-  }
-
-  // The iframe fires a "load" event once for the form itself, and again
-  // when Google Forms navigates it to the "response recorded" page after
-  // he hits submit — that second load is our signal.
-  document.addEventListener("DOMContentLoaded", () => {
-    const iframe = document.getElementById("giftFormFrame");
-    if (!iframe) return;
-    iframe.addEventListener("load", () => {
-      giftFormLoadCount++;
-      if (giftFormLoadCount >= 2){
-        showSubmittedThanks();
+    checkboxes.forEach(cb => {
+      if (!cb.checked){
+        cb.disabled = checked.length >= 2;
       }
     });
-  });
 
-  function showSubmittedThanks(){
-    if (giftFormSubmitted) return;
-    giftFormSubmitted = true;
-
-    const thanks = document.getElementById("giftThanks");
-    if (thanks) thanks.classList.add("show");
-
-    launchBalloons(10);
-
-    setTimeout(() => {
-      closeGiftModal();
-      if (thanks) thanks.classList.remove("show");
-      goToSlide(6);
-    }, 1700);
+    if (checked.length < 2){
+      status.textContent = `Pick ${2 - checked.length} more`;
+      submitBtn.disabled = true;
+    } else {
+      status.textContent = "Ready to submit ✨";
+      submitBtn.disabled = false;
+    }
   }
 
-  /* ============ end gift form modal logic ============ */
+  // Submits to Netlify Forms via fetch so we can stay on this page and
+  // advance to the "thank you" slide instead of doing a full page reload.
+  // Turn on Site settings > Forms > Form notifications > Email notification
+  // in your Netlify dashboard to get an email each time this is submitted.
+  function handleGiftSubmit(e){
+    e.preventDefault();
+    const form = document.getElementById("giftForm");
+    const submitBtn = document.getElementById("giftSubmitBtn");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    const data = new FormData(form);
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(data).toString()
+    })
+    .then(() => {
+      nextSlide();
+    })
+    .catch(() => {
+      // even if the network call hiccups, don't strand the user on this
+      // slide — still move them forward so the experience doesn't break
+      nextSlide();
+    });
+
+    return false;
+  }
+
+  /* ============ end in-page gift picker ============ */
 
   let candleBlown = false;
 
@@ -989,7 +1016,7 @@ function cutRibbon(){
   }, 700);
 }
 
-/* ============ NEW: gallery gift-unwrap + flip logic ============ */
+/* ============ gallery gift-unwrap + flip logic ============ */
 
 function unwrapPhoto(coverEl){
   if (coverEl.classList.contains("opened")) return;
@@ -1013,7 +1040,7 @@ function flipCard(btnEl){
   card.classList.toggle("flipped");
 }
 
-/* ============ end new gallery logic ============ */
+/* ============ end gallery logic ============ */
 
 function restartExperience(){
   candleBlown = false;
@@ -1024,6 +1051,15 @@ function restartExperience(){
 
   const oldSmoke = document.querySelector(".smoke");
   if (oldSmoke) oldSmoke.remove();
+
+  // reset the gift form so it can be filled out again
+  const giftForm = document.getElementById("giftForm");
+  if (giftForm) giftForm.reset();
+  document.querySelectorAll('#giftOptions input[type="checkbox"]').forEach(cb => cb.disabled = false);
+  const status = document.getElementById("giftStatus");
+  if (status) status.textContent = "Pick 2 options";
+  const submitBtn = document.getElementById("giftSubmitBtn");
+  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Submit my choice 🎁"; }
 
   goToSlide(1);
   countUpAge();   // ← new line
