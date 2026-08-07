@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birthday Surprise</title>
-
+ 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+ 
 <style>
-
-
+ 
+ 
 :root{
   --ink:#2d1b4e;          /* deep dusky purple background */
   --ink-deep:#1a0f30;      /* darker purple for depth */
@@ -21,11 +21,11 @@
   --paper:#fff0e6;         /* warm cream text */
   --line:rgba(255,154,86,0.32);
 }
-
+ 
   *{ margin:0; padding:0; box-sizing:border-box; }
-
+ 
   html,body{ height:100%; }
-
+ 
  body{
   font-family:'Caveat',cursive;
   background:
@@ -41,7 +41,7 @@
   overflow-x:hidden;
   position:relative;
 }
-
+ 
   /* ambient stars */
   .stars{
     position:fixed;
@@ -49,7 +49,7 @@
     pointer-events:none;
     z-index:0;
   }
-
+ 
   .stars span{
   position:absolute;
   width:2px;
@@ -59,13 +59,13 @@
   opacity:0.5;
   animation:twinkle 3.5s ease-in-out infinite;
 }
-
-
+ 
+ 
   @keyframes twinkle{
     0%,100%{ opacity:0.15; }
     50%{ opacity:0.85; }
   }
-
+ 
   .stage{
     position:relative;
     z-index:1;
@@ -73,7 +73,7 @@
     max-width:760px;
     text-align:center;
   }
-
+ 
   .slide{
     display:none;
   }
@@ -81,12 +81,12 @@
     display:block;
     animation:rise 0.9s cubic-bezier(.2,.8,.2,1);
   }
-
+ 
   @keyframes rise{
     from{ opacity:0; transform:translateY(28px); }
     to{ opacity:1; transform:translateY(0); }
   }
-
+ 
   .eyebrow{
     font-size:13px;
     letter-spacing:0.32em;
@@ -95,7 +95,7 @@
     margin-bottom:18px;
     font-weight:500;
   }
-
+ 
   h1{
     font-family:'Caveat',cursive;
     font-weight:600;
@@ -103,13 +103,13 @@
     line-height:1.05;
     color:var(--paper);
   }
-
+ 
   h1 .accent{
     font-style:italic;
     color:var(--gold);
     font-weight:500;
   }
-
+ 
   h2{
     font-family:'Caveat',cursive;
     font-weight:500;
@@ -117,7 +117,7 @@
     margin-top:14px;
     color:var(--gold-soft);
   }
-
+ 
   p{
     font-size:17px;
     line-height:1.9;
@@ -126,14 +126,14 @@
     margin:22px auto 0;
     font-weight:300;
   }
-
+ 
   /* --- signature element: the candle --- */
   .candle-wrap{
     display:flex;
     justify-content:center;
     margin:38px 0 8px;
   }
-
+ 
   .candle{
   width:26px;
   height:100px;
@@ -142,7 +142,7 @@
   position:relative;
   box-shadow: inset -4px 0 8px rgba(0,0,0,0.25);
 }
-
+ 
   .candle::before{
     content:"";
     position:absolute;
@@ -154,7 +154,7 @@
     font-size:15px;
     color:var(--paper);
   }
-
+ 
   .flame{
     width:16px;
     height:26px;
@@ -167,21 +167,21 @@
     animation:flicker 1.4s ease-in-out infinite;
     filter:drop-shadow(0 0 12px rgba(242,181,68,0.75));
   }
-
+ 
   @keyframes flicker{
     0%,100%{ transform:translateX(-50%) scale(1) rotate(-2deg); }
     50%{ transform:translateX(-50%) scale(1.08) rotate(2deg); }
   }
-
+ 
   .candle-wrap{ cursor:pointer; }
-
+ 
   .flame.blown{
     animation:none;
     transform:translateX(-50%) scale(0);
     opacity:0;
     transition:transform 0.35s ease, opacity 0.35s ease;
   }
-
+ 
   .smoke{
     position:absolute;
     top:-24px;
@@ -194,12 +194,12 @@
     pointer-events:none;
     animation:smokeRise 1.1s ease-out forwards;
   }
-
+ 
   @keyframes smokeRise{
     0%{ transform:translate(-50%,0) scale(0.6); opacity:0.6; }
     100%{ transform:translate(-50%,-70px) scale(2.2); opacity:0; }
   }
-
+ 
   /* --- balloons --- */
   .balloon-field{
     position:fixed;
@@ -208,7 +208,7 @@
     z-index:5;
     overflow:hidden;
   }
-
+ 
   .balloon{
     position:absolute;
     bottom:-140px;
@@ -219,7 +219,7 @@
     animation-timing-function:ease-in;
     animation-fill-mode:forwards;
   }
-
+ 
   .balloon::after{
     content:"";
     position:absolute;
@@ -230,13 +230,13 @@
     background:rgba(246,239,227,0.4);
     transform:translateX(-50%);
   }
-
+ 
   @keyframes floatUp{
     0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:1; }
     85%{ opacity:1; }
     100%{ transform:translateY(-115vh) translateX(var(--drift,0px)) rotate(var(--tilt,0deg)); opacity:0; }
   }
-
+ 
 button{
   font-family:'Caveat',cursive;
   font-weight:500;
@@ -251,14 +251,14 @@ button{
   color:var(--paper);
   transition:0.35s ease;
 }
-
+ 
 button:hover{
   background:var(--gold);
   color:#fff;
   border-color:var(--gold);
   transform:translateY(-2px);
 }
-
+ 
 button:disabled{
   opacity:0.45;
   cursor:not-allowed;
@@ -269,7 +269,7 @@ button:disabled:hover{
   border-color:var(--line);
   transform:none;
 }
-
+ 
   .cards{
     display:flex;
     justify-content:center;
@@ -277,7 +277,7 @@ button:disabled:hover{
     margin-top:40px;
     flex-wrap:wrap;
   }
-
+ 
   .cards div{
     background:rgba(242,181,68,0.06);
     border:1px solid var(--line);
@@ -289,12 +289,12 @@ button:disabled:hover{
     font-weight:400;
     transition:0.3s ease;
   }
-
+ 
   .cards div:hover{
     background:rgba(242,181,68,0.14);
     transform:translateY(-4px);
   }
-
+ 
   .gallery{
     display:flex;
     justify-content:center;
@@ -302,22 +302,22 @@ button:disabled:hover{
     margin-top:38px;
     flex-wrap:wrap;
   }
-
+ 
   /* ============ gift-wrapped, flippable photo cards ============ */
-
+ 
   .photo-card{
     display:flex;
     flex-direction:column;
     align-items:center;
   }
-
+ 
   .flip-scene{
     width:220px;
     height:220px;
     position:relative;
     perspective:1000px;
   }
-
+ 
   .flip-inner{
     width:100%;
     height:100%;
@@ -326,11 +326,11 @@ button:disabled:hover{
     transition:transform 0.7s cubic-bezier(.2,.8,.2,1);
     border-radius:16px;
   }
-
+ 
   .photo-card.flipped .flip-inner{
     transform:rotateY(180deg);
   }
-
+ 
   .flip-front, .flip-back{
     position:absolute;
     inset:0;
@@ -341,14 +341,14 @@ button:disabled:hover{
     box-shadow:0 18px 40px rgba(0,0,0,0.45);
     overflow:hidden;
   }
-
+ 
   .flip-front img{
     width:100%;
     height:100%;
     object-fit:cover;
     display:block;
   }
-
+ 
   .flip-back{
     transform:rotateY(180deg);
     background:linear-gradient(160deg, rgba(255,94,126,0.18), rgba(255,154,86,0.14));
@@ -357,7 +357,7 @@ button:disabled:hover{
     justify-content:center;
     padding:20px;
   }
-
+ 
   .flip-back p{
     margin:0;
     font-size:16px;
@@ -365,7 +365,7 @@ button:disabled:hover{
     color:var(--paper);
     max-width:none;
   }
-
+ 
   /* the book-style cover that sits on top until tapped, hinged on the left */
   .wrap-cover{
     position:absolute;
@@ -385,7 +385,7 @@ button:disabled:hover{
     -webkit-backface-visibility:hidden;
     transition:transform 0.8s cubic-bezier(.3,.7,.2,1), box-shadow 0.8s ease;
   }
-
+ 
   /* book spine */
   .wrap-cover::before{
     content:"";
@@ -395,13 +395,13 @@ button:disabled:hover{
     background:rgba(0,0,0,0.2);
     border-radius:16px 0 0 16px;
   }
-
+ 
   .wrap-cover .wrap-emoji{
     font-size:44px;
     animation:giftBounce 2.4s ease-in-out infinite;
     filter:drop-shadow(0 10px 18px rgba(0,0,0,0.35));
   }
-
+ 
   .wrap-cover .wrap-label{
     font-family:'Caveat',cursive;
     font-size:16px;
@@ -409,13 +409,13 @@ button:disabled:hover{
     color:var(--paper);
     letter-spacing:0.01em;
   }
-
+ 
   .wrap-cover.opened{
     transform:rotateY(-115deg);
     box-shadow:0 6px 18px rgba(0,0,0,0.2);
     pointer-events:none;
   }
-
+ 
   .photo-card .flip-btn{
     margin-top:14px;
     padding:9px 22px;
@@ -424,14 +424,14 @@ button:disabled:hover{
     pointer-events:none;
     transition:opacity 0.4s ease;
   }
-
+ 
   .photo-card.unwrapped .flip-btn{
     opacity:1;
     pointer-events:auto;
   }
-
+ 
   /* ============ end gallery styles ============ */
-
+ 
   /* progress dots */
   .dots{
     display:flex;
@@ -450,38 +450,38 @@ button:disabled:hover{
     background:var(--gold);
     box-shadow:0 0 8px rgba(242,181,68,0.8);
   }
-
+ 
   @media (max-width:640px){
     .flip-scene{ width:150px; height:150px; }
     .wrap-cover .wrap-emoji{ font-size:38px; }
     p{ font-size:15.5px; }
   }
-
+ 
   @media (prefers-reduced-motion: reduce){
     .flame, .stars span, .slide.active, .wrap-cover .wrap-emoji{ animation:none; }
   }
-
-
+ 
+ 
 /* --- ribbon-cutting intro screen --- */
 @keyframes giftBounce{
   0%,100%{ transform:translateY(0) rotate(-4deg); }
   50%{ transform:translateY(-12px) rotate(4deg); }
 }
-
+ 
 .ribbon-stage{
   position:relative;
   width:100%;
-  max-width:520px;
+  max-width:1000px;
   height:64px;
-  margin:38px auto 8px;
+  margin:40px auto 8px;
   display:flex;
   align-items:center;
   cursor:pointer;
 }
-
+ 
 .ribbon-half{
   flex:1;
-  height:24px;
+  height:20px;
   background:
     repeating-linear-gradient(135deg, rgba(255,255,255,0.16) 0 10px, transparent 10px 20px),
     linear-gradient(90deg, var(--coral), var(--gold));
@@ -489,7 +489,7 @@ button:disabled:hover{
   position:relative;
   transition:transform 0.85s cubic-bezier(.3,.7,.2,1), opacity 0.85s ease;
 }
-
+ 
 .ribbon-half::after{
   content:"";
   position:absolute;
@@ -497,19 +497,19 @@ button:disabled:hover{
   width:14px;
   background:rgba(0,0,0,0.18);
 }
-
+ 
 .ribbon-left{
   border-radius:5px 0 0 5px;
   transform-origin:left center;
 }
 .ribbon-left::after{ right:-1px; }
-
+ 
 .ribbon-right{
   border-radius:0 5px 5px 0;
   transform-origin:right center;
 }
 .ribbon-right::after{ left:-1px; }
-
+ 
 .ribbon-bow{
   font-size:48px;
   line-height:1;
@@ -520,9 +520,9 @@ button:disabled:hover{
   animation:giftBounce 2.4s ease-in-out infinite;
   transition:transform 0.5s ease, opacity 0.5s ease;
 }
-
+ 
 .ribbon-stage.cut{ pointer-events:none; }
-
+ 
 .ribbon-stage.cut .ribbon-left{
   transform:translateY(90px) rotate(-30deg);
   opacity:0;
@@ -536,7 +536,7 @@ button:disabled:hover{
   transform:scale(0.6) translateY(50px);
   opacity:0;
 }
-
+ 
 .gift-hint{
   font-size:14px;
   letter-spacing:0.08em;
@@ -544,104 +544,22 @@ button:disabled:hover{
   opacity:0.85;
   margin-top:10px;
 }
-
-/* --- in-page gift picker (image tiles) --- */
-.gift-options{
-  display:flex;
-  justify-content:center;
-  gap:22px;
-  margin-top:34px;
-  flex-wrap:wrap;
-}
-
-.gift-option{
-  cursor:pointer;
-}
-
-.gift-option input{
-  position:absolute;
-  opacity:0;
-  width:0;
-  height:0;
-}
-
-.gift-option-card{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:150px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:rgba(242,181,68,0.06);
-  overflow:hidden;
-  transition:0.25s ease;
-}
-
-.gift-option-card .gift-img-wrap{
-  width:100%;
-  height:150px;
-  overflow:hidden;
-  background:rgba(0,0,0,0.15);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.gift-option-card .gift-img-wrap img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.gift-option-card .gift-label{
-  padding:12px 8px;
-  font-size:17px;
-  color:var(--gold-soft);
-}
-
-.gift-option input:checked + .gift-option-card{
-  border-color:var(--coral);
-  transform:translateY(-5px);
-  box-shadow:0 12px 26px rgba(255,94,126,0.3);
-}
-
-.gift-option input:checked + .gift-option-card .gift-label{
-  color:var(--paper);
-  font-weight:600;
-}
-
-.gift-option input:checked + .gift-option-card::after{
-  content:"✓";
-}
-
-.gift-option input:disabled + .gift-option-card{
-  opacity:0.4;
-  cursor:not-allowed;
-}
-
-.gift-status{
-  font-size:15px;
-  color:var(--gold-soft);
-  margin-top:18px;
-  min-height:20px;
-}
-
+ 
 </style>
 </head>
-
+ 
 <body>
-
+ 
 <div class="stars" id="stars"></div>
 <div class="balloon-field" id="balloonField"></div>
-
-
+ 
+ 
 <div class="stage">
-
+ 
 <!-- Slide 0: Ribbon-Cutting Intro -->
 <div class="slide active" id="slide0">
-  <div class="eyebrow">Some Surprise is waiting for you </div>
-  <h1><span class="accent"> Cut the ribbon to begin B'day surprise 🧁</span></h1>
+  <div class="eyebrow">Some Surprise is waiting for you inside the website!!</div>
+  <h1><span class="accent"> Cut the ribbon to begin surprise 🧁🎉✨</span></h1>
   <div class="ribbon-stage" id="ribbonStage" onclick="cutRibbon()">
     <div class="ribbon-half ribbon-left"></div>
     <div class="ribbon-bow">🎀</div>
@@ -649,8 +567,8 @@ button:disabled:hover{
   </div>
   <p class="gift-hint"><h4> Tap the bow to cut the ribbon 🪄</h4></p>
 </div>
-
-
+ 
+ 
   <!-- Slide 1 -->
   <div class="slide" id="slide1">
     <div class="eyebrow">A little something for you</div>
@@ -661,22 +579,22 @@ button:disabled:hover{
     <p>Cheers to <span id="ageCounter">0</span> </p>
     <button onclick="blowCandle()" id="blowBtn">Blow the candle 🎉</button>
   </div>
-
+ 
   <!-- Slide 2 -->
   <div class="slide" id="slide2">
     <div class="eyebrow">Dear Balaji</div>
     <h1 style="font-size:clamp(30px,5vw,44px);">A few things<br><span class="accent">worth saying</span></h1>
     <p>
-
+ 
 Happy Birthday to one of the most amazing friend I know.
       Thank you for all the laughs, memories, and moments that made life better.
       May this year bring you success, happiness, adventures, and everything you've been working for.
       And thank you for showing up for me every time I needed you.
-
+ 
     </p>
     <button onclick="nextSlide()">Keep going</button>
   </div>
-
+ 
   <!-- Slide 3 -->
   <div class="slide" id="slide3">
     <div class="eyebrow">Something special</div>
@@ -686,7 +604,7 @@ Happy Birthday to one of the most amazing friend I know.
       <div onclick="nextSlide()">👀🎁 Something Special Is Hidden For You.. <br> Some cute memories together 👀🎁</div>
     </div>
   </div>
-
+ 
   <!-- Slide 4 -->
   <div class="slide" id="slide4">
     <div class="eyebrow">Looking back</div>
@@ -701,16 +619,13 @@ Happy Birthday to one of the most amazing friend I know.
             2.jpg
             3.jpg
             4.jpg
-            wallet.jpg
-            cake.jpg
-            perfume.jpg
         Since the photos sit right next to this HTML file, the paths below
         are just the filenames themselves — no subfolder needed.
-
+ 
         Edit the text inside each .flip-back <p> below to change what shows
         up on the back of each photo.
       -->
-
+ 
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
@@ -724,7 +639,7 @@ Happy Birthday to one of the most amazing friend I know.
         </div>
         <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
       </div>
-
+ 
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
@@ -738,7 +653,7 @@ Happy Birthday to one of the most amazing friend I know.
         </div>
         <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
       </div>
-
+ 
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
@@ -752,7 +667,7 @@ Happy Birthday to one of the most amazing friend I know.
         </div>
         <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
       </div>
-
+ 
       <div class="photo-card">
         <div class="flip-scene">
           <div class="wrap-cover" onclick="unwrapPhoto(this)">
@@ -767,80 +682,28 @@ Happy Birthday to one of the most amazing friend I know.
         <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
       </div>
     </div>
-    <button onclick="nextSlide()">Click here to choose your gift🎁</button>
+    <button onclick="nextSlide()">Continue 🎁</button>
   </div>
-
-  <!-- Slide 5: In-page gift picker with images -->
+ 
+  <!-- Slide 5 (was slide 6) -->
   <div class="slide" id="slide5">
-    <div class="eyebrow">Last one</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">Choose any <span class="accent">two gifts</span></h1>
-    <p>Tap on two of the gifts below, then hit submit.</p>
-
-    <!-- Netlify Forms auto-detects this at deploy time because of
-         data-netlify="true". Submissions (and an email, once you turn on
-         notifications in your Netlify dashboard) go straight to you —
-         no external Google Form needed. -->
-    <form id="giftForm" name="gift-choice" method="POST" data-netlify="true" onsubmit="return handleGiftSubmit(event)">
-      <input type="hidden" name="form-name" value="gift-choice">
-
-      <div class="gift-options" id="giftOptions">
-        <label class="gift-option">
-          <input type="checkbox" name="gift" value="Wallet" onchange="limitGiftChoices()">
-          <span class="gift-option-card">
-            <span class="gift-img-wrap"><img src="22.jpg" alt="Wallet"></span>
-            <span class="gift-label">Wallet</span>
-          </span>
-        </label>
-        <label class="gift-option">
-          <input type="checkbox" name="gift" value="Cake" onchange="limitGiftChoices()">
-          <span class="gift-option-card">
-            <span class="gift-img-wrap"><img src="11.jpg" alt="Cake"></span>
-            <span class="gift-label">Cake</span>
-          </span>
-        </label>
-        <label class="gift-option">
-          <input type="checkbox" name="gift" value="Perfume" onchange="limitGiftChoices()">
-          <span class="gift-option-card">
-            <span class="gift-img-wrap"><img src="33.jpg" alt="Perfume"></span>
-            <span class="gift-label">Perfume</span>
-          </span>
-        </label>
-      </div>
-
-      <div class="gift-status" id="giftStatus">Pick a options</div>
-
-      <button type="submit" id="giftSubmitBtn" disabled>Submit my choice 🎁</button>
-    </form>
-  </div>
-
-  <!-- Slide 6 -->
-  <div class="slide" id="slide6">
     <div class="eyebrow">All done</div>
     <h1 style="font-size:clamp(30px,5vw,44px);">Surprise <span class="accent">complete</span></h1>
-    <p>Your gift choice has been received.<br><br>Your surprise is being prepared and reaches you in 1 or 2 days 🧸</p>
+    <p>Keep guessing your gift and it will get reach you soon 📦🧸</p>
     <h2>Happy Birthday, Balaji 🪄✨</h2>
    <button onclick="restartExperience()">↺ Start Over</button>
   </div>
-
+ 
   <div class="dots" id="dots"></div>
-
+ 
 </div>
-
-<!-- Hidden static form: Netlify scans the built HTML for this exact markup
-     at deploy time to register the form. It must match the visible form's
-     name and fields, or Netlify won't detect it. Do not remove. -->
-<form name="gift-choice" data-netlify="true" hidden>
-  <input type="checkbox" name="gift" value="Wallet">
-  <input type="checkbox" name="gift" value="Cake">
-  <input type="checkbox" name="gift" value="Perfume">
-</form>
-
+ 
 <!----Javascript---->
-
+ 
 <script>
-  const totalSlides = 6;
+  const totalSlides = 5;
   let current = 1;
-
+ 
   function countUpAge(){
   const el = document.getElementById("ageCounter");
   if (!el) return;
@@ -854,7 +717,7 @@ Happy Birthday to one of the most amazing friend I know.
     if (value >= target) clearInterval(interval);
   }, stepTime);
 }
-
+ 
   function renderDots(){
     const dotsEl = document.getElementById("dots");
     dotsEl.innerHTML = "";
@@ -864,88 +727,32 @@ Happy Birthday to one of the most amazing friend I know.
       dotsEl.appendChild(d);
     }
   }
-
+ 
   function goToSlide(n){
     if (n < 1 || n > totalSlides || n === current) return;
     document.getElementById("slide" + current).classList.remove("active");
     current = n;
     document.getElementById("slide" + current).classList.add("active");
     renderDots();
-    if (n === 6){
+    if (n === totalSlides){
       launchBalloons(10);
     }
   }
-
+ 
   function nextSlide(){
     goToSlide(current + 1);
   }
-
-  /* ============ in-page gift picker ============ */
-
-  // Cap selection at 2 checkboxes — once 2 are checked, grey out the rest.
-  function limitGiftChoices(){
-    const checkboxes = document.querySelectorAll('#giftOptions input[type="checkbox"]');
-    const checked = document.querySelectorAll('#giftOptions input[type="checkbox"]:checked');
-    const status = document.getElementById("giftStatus");
-    const submitBtn = document.getElementById("giftSubmitBtn");
-
-    checkboxes.forEach(cb => {
-      if (!cb.checked){
-        cb.disabled = checked.length >= 2;
-      }
-    });
-
-    if (checked.length < 2){
-      status.textContent = `Pick ${2 - checked.length} more`;
-      submitBtn.disabled = true;
-    } else {
-      status.textContent = "Ready to submit ✨";
-      submitBtn.disabled = false;
-    }
-  }
-
-  // Submits to Netlify Forms via fetch so we can stay on this page and
-  // advance to the "thank you" slide instead of doing a full page reload.
-  // Turn on Site settings > Forms > Form notifications > Email notification
-  // in your Netlify dashboard to get an email each time this is submitted.
-  function handleGiftSubmit(e){
-    e.preventDefault();
-    const form = document.getElementById("giftForm");
-    const submitBtn = document.getElementById("giftSubmitBtn");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Sending...";
-
-    const data = new FormData(form);
-
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(data).toString()
-    })
-    .then(() => {
-      nextSlide();
-    })
-    .catch(() => {
-      // even if the network call hiccups, don't strand the user on this
-      // slide — still move them forward so the experience doesn't break
-      nextSlide();
-    });
-
-    return false;
-  }
-
-  /* ============ end in-page gift picker ============ */
-
+ 
   let candleBlown = false;
-
+ 
   function blowCandle(){
     if (candleBlown) return;
     candleBlown = true;
-
+ 
     const flame = document.getElementById("flame");
     const blowBtn = document.getElementById("blowBtn");
     if (blowBtn) blowBtn.disabled = true;
-
+ 
     // puff out the flame + a little smoke wisp
     if (flame){
       flame.classList.add("blown");
@@ -953,17 +760,17 @@ Happy Birthday to one of the most amazing friend I know.
       smoke.className = "smoke";
       flame.parentElement.appendChild(smoke);
     }
-
+ 
     launchBalloons(24);
-
+ 
     // let the balloons fly for a bit before moving on
     setTimeout(nextSlide, 1900);
   }
-
+ 
   function launchBalloons(count){
     const field = document.getElementById("balloonField");
     const colors = ["#ff5e7e", "#ff9a56", "#ffc17a", "#f4837a", "#c23e5c", "#ffb385"];
-
+ 
     for (let i = 0; i < count; i++){
       const b = document.createElement("div");
       b.className = "balloon";
@@ -978,14 +785,14 @@ Happy Birthday to one of the most amazing friend I know.
       b.style.animationDuration = duration + "s";
       b.style.animationDelay = delay + "s";
       field.appendChild(b);
-
+ 
       // clean up after it floats off screen
       setTimeout(() => b.remove(), (duration + delay) * 1000 + 200);
     }
   }
-
-
-
+ 
+ 
+ 
   // ambient stars
   (function makeStars(){
     const container = document.getElementById("stars");
@@ -998,15 +805,15 @@ Happy Birthday to one of the most amazing friend I know.
       container.appendChild(s);
     }
   })();
-
+ 
 function cutRibbon(){
   const stage = document.getElementById("ribbonStage");
   if (!stage || stage.classList.contains("cut")) return;
   stage.classList.add("cut");
-
+ 
   // celebratory burst as the ribbon falls away
   launchBalloons(12);
-
+ 
   setTimeout(() => {
     document.getElementById("slide0").classList.remove("active");
     document.getElementById("slide1").classList.add("active");
@@ -1015,17 +822,17 @@ function cutRibbon(){
     countUpAge();
   }, 700);
 }
-
+ 
 /* ============ gallery gift-unwrap + flip logic ============ */
-
+ 
 function unwrapPhoto(coverEl){
   if (coverEl.classList.contains("opened")) return;
   coverEl.classList.add("opened");
   const card = coverEl.closest(".photo-card");
-
+ 
   // a little confetti-ish burst so the reveal feels rewarded
   launchBalloons(6);
-
+ 
   // the cover swings open on its hinge (like a book) and, thanks to
   // backface-visibility, disappears from view once past 90° — no need
   // to hide it manually, it just stays "open"
@@ -1033,38 +840,29 @@ function unwrapPhoto(coverEl){
     if (card) card.classList.add("unwrapped");
   }, 650);
 }
-
+ 
 function flipCard(btnEl){
   const card = btnEl.closest(".photo-card");
   if (!card || !card.classList.contains("unwrapped")) return;
   card.classList.toggle("flipped");
 }
-
+ 
 /* ============ end gallery logic ============ */
-
+ 
 function restartExperience(){
   candleBlown = false;
   const flame = document.getElementById("flame");
   const blowBtn = document.getElementById("blowBtn");
   if (flame) flame.classList.remove("blown");
   if (blowBtn) blowBtn.disabled = false;
-
+ 
   const oldSmoke = document.querySelector(".smoke");
   if (oldSmoke) oldSmoke.remove();
-
-  // reset the gift form so it can be filled out again
-  const giftForm = document.getElementById("giftForm");
-  if (giftForm) giftForm.reset();
-  document.querySelectorAll('#giftOptions input[type="checkbox"]').forEach(cb => cb.disabled = false);
-  const status = document.getElementById("giftStatus");
-  if (status) status.textContent = "Pick 2 options";
-  const submitBtn = document.getElementById("giftSubmitBtn");
-  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Submit my choice 🎁"; }
-
+ 
   goToSlide(1);
   countUpAge();   // ← new line
 }
-
+ 
 let touchStartX = 0;
 document.addEventListener("touchstart", (e) => {
   touchStartX = e.changedTouches[0].screenX;
@@ -1079,12 +877,15 @@ document.addEventListener("touchend", (e) => {
     goToSlide(current - 1); // swipe right → previous
   }
 });
-
-
+ 
+ 
 renderDots();
 document.getElementById("dots").style.display = "none";
-
+ 
 </script>
-
+ 
 </body>
 </html>
+ 
+
+
