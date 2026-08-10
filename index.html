@@ -1,1322 +1,1120 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Surprise</title>
- 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Poppins:wght@300;400;500;600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
- 
-<style>
- 
- 
-:root{
-  --ink:#2d1b4e;          /* deep dusky purple background */
-  --ink-deep:#1a0f30;      /* darker purple for depth */
-  --gold:#ff9a56;          /* warm sunset orange */
-  --gold-soft:#ffc17a;     /* golden peach */
-  --coral:#ff5e7e;         /* sunset pink */
-  --paper:#fff0e6;         /* warm cream text */
-  --line:rgba(255,154,86,0.32);
-}
- 
-  *{ margin:0; padding:0; box-sizing:border-box; }
- 
-  html,body{ height:100%; }
- 
- body{
-  font-family:'Caveat',cursive;
-  background:
-    radial-gradient(circle at 50% 100%, rgba(255,94,126,0.35), transparent 55%),
-    radial-gradient(circle at 20% 20%, rgba(255,154,86,0.25), transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(255,193,122,0.20), transparent 50%),
-    linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 100%);
-  color:var(--paper);
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow-x:hidden;
-  position:relative;
-}
- 
-  /* ambient stars */
-  .stars{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:0;
-  }
- 
-  .stars span{
-  position:absolute;
-  width:2px;
-  height:2px;
-  background:var(--gold-soft);
-  border-radius:50%;
-  opacity:0.5;
-  animation:twinkle 3.5s ease-in-out infinite;
-}
- 
- 
-  @keyframes twinkle{
-    0%,100%{ opacity:0.15; }
-    50%{ opacity:0.85; }
-  }
- 
-  .stage{
-    position:relative;
-    z-index:1;
-    width:92%;
-    max-width:760px;
-    text-align:center;
-  }
- 
-  .slide{
-    display:none;
-  }
-  .slide.active{
-    display:block;
-    animation:rise 0.9s cubic-bezier(.2,.8,.2,1);
-  }
- 
-  @keyframes rise{
-    from{ opacity:0; transform:translateY(28px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
- 
-  .eyebrow{
-    font-size:13px;
-    letter-spacing:0.32em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:18px;
-    font-weight:500;
-  }
- 
-  h1{
-    font-family:'Caveat',cursive;
-    font-weight:600;
-    font-size:clamp(38px, 7vw, 68px);
-    line-height:1.05;
-    color:var(--paper);
-  }
- 
-  h1 .accent{
-    font-style:italic;
-    color:var(--gold);
-    font-weight:500;
-  }
- 
-  h2{
-    font-family:'Caveat',cursive;
-    font-weight:500;
-    font-size:clamp(24px, 4vw, 34px);
-    margin-top:14px;
-    color:var(--gold-soft);
-  }
- 
-  p{
-    font-size:17px;
-    line-height:1.9;
-    color:rgba(246,239,227,0.82);
-    max-width:560px;
-    margin:22px auto 0;
-    font-weight:300;
-  }
- 
-  /* --- signature element: the candle --- */
-  .candle-wrap{
-    display:flex;
-    justify-content:center;
-    margin:38px 0 8px;
-  }
- 
-  .candle{
-  width:26px;
-  height:100px;
-  background:linear-gradient(180deg, var(--coral), #c23e5c);
-  border-radius:6px;
-  position:relative;
-  box-shadow: inset -4px 0 8px rgba(0,0,0,0.25);
-}
- 
-  .candle::before{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-family:'Caveat',cursive;
-    font-weight:600;
-    font-size:15px;
-    color:var(--paper);
-  }
- 
-  .flame{
-    width:16px;
-    height:26px;
-    background:radial-gradient(circle at 50% 30%, #fff6d8, var(--gold) 55%, var(--coral) 100%);
-    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
-    position:absolute;
-    top:-22px;
-    left:50%;
-    transform:translateX(-50%);
-    animation:flicker 1.4s ease-in-out infinite;
-    filter:drop-shadow(0 0 12px rgba(242,181,68,0.75));
-  }
- 
-  @keyframes flicker{
-    0%,100%{ transform:translateX(-50%) scale(1) rotate(-2deg); }
-    50%{ transform:translateX(-50%) scale(1.08) rotate(2deg); }
-  }
- 
-  .candle-wrap{ cursor:pointer; }
- 
-  .flame.blown{
-    animation:none;
-    transform:translateX(-50%) scale(0);
-    opacity:0;
-    transition:transform 0.35s ease, opacity 0.35s ease;
-  }
- 
-  .smoke{
-    position:absolute;
-    top:-24px;
-    left:50%;
-    width:10px;
-    height:10px;
-    background:rgba(246,239,227,0.55);
-    border-radius:50%;
-    filter:blur(3px);
-    pointer-events:none;
-    animation:smokeRise 1.1s ease-out forwards;
-  }
- 
-  @keyframes smokeRise{
-    0%{ transform:translate(-50%,0) scale(0.6); opacity:0.6; }
-    100%{ transform:translate(-50%,-70px) scale(2.2); opacity:0; }
-  }
- 
-  /* --- balloons --- */
-  .balloon-field{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:5;
-    overflow:hidden;
-  }
- 
-  .balloon{
-    position:absolute;
-    bottom:-140px;
-    width:46px;
-    height:58px;
-    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
-    animation-name:floatUp;
-    animation-timing-function:ease-in;
-    animation-fill-mode:forwards;
-  }
- 
-  .balloon::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    bottom:-22px;
-    width:1px;
-    height:22px;
-    background:rgba(246,239,227,0.4);
-    transform:translateX(-50%);
-  }
- 
-  @keyframes floatUp{
-    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:1; }
-    85%{ opacity:1; }
-    100%{ transform:translateY(-115vh) translateX(var(--drift,0px)) rotate(var(--tilt,0deg)); opacity:0; }
-  }
- 
-button{
-  font-family:'Caveat',cursive;
-  font-weight:500;
-  padding:15px 34px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  margin-top:34px;
-  font-size:15px;
-  letter-spacing:0.02em;
-  cursor:pointer;
-  background:rgba(255,255,255,0.5);
-  color:var(--paper);
-  transition:0.35s ease;
-}
- 
-button:hover{
-  background:var(--gold);
-  color:#fff;
-  border-color:var(--gold);
-  transform:translateY(-2px);
-}
- 
-button:disabled{
-  opacity:0.45;
-  cursor:not-allowed;
-}
-button:disabled:hover{
-  background:rgba(255,255,255,0.5);
-  color:var(--paper);
-  border-color:var(--line);
-  transform:none;
-}
- 
-  .cards{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:40px;
-    flex-wrap:wrap;
-  }
- 
-  .cards div{
-    background:rgba(242,181,68,0.06);
-    border:1px solid var(--line);
-    color:var(--gold-soft);
-    padding:34px 30px;
-    border-radius:16px;
-    cursor:pointer;
-    font-size:16px;
-    font-weight:400;
-    transition:0.3s ease;
-  }
- 
-  .cards div:hover{
-    background:rgba(242,181,68,0.14);
-    transform:translateY(-4px);
-  }
- 
-  .gallery{
-    display:flex;
-    justify-content:center;
-    gap:26px;
-    margin-top:38px;
-    flex-wrap:wrap;
-  }
- 
-  /* ============ gift-wrapped, flippable photo cards ============ */
- 
-  .photo-card{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
- 
-  .flip-scene{
-    width:220px;
-    height:220px;
-    position:relative;
-    perspective:1000px;
-  }
- 
-  .flip-inner{
-    width:100%;
-    height:100%;
-    position:relative;
-    transform-style:preserve-3d;
-    transition:transform 0.7s cubic-bezier(.2,.8,.2,1);
-    border-radius:16px;
-  }
- 
-  .photo-card.flipped .flip-inner{
-    transform:rotateY(180deg);
-  }
- 
-  .flip-front, .flip-back{
-    position:absolute;
-    inset:0;
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-    border-radius:16px;
-    border:1px solid var(--line);
-    box-shadow:0 18px 40px rgba(0,0,0,0.45);
-    overflow:hidden;
-  }
- 
-  .flip-front img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
- 
-  .flip-back{
-    transform:rotateY(180deg);
-    background:linear-gradient(160deg, rgba(255,94,126,0.18), rgba(255,154,86,0.14));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
- 
-  .flip-back p{
-    margin:0;
-    font-size:16px;
-    line-height:1.55;
-    color:var(--paper);
-    max-width:none;
-  }
- 
-  /* the book-style cover that sits on top until tapped, hinged on the left */
-  .wrap-cover{
-    position:absolute;
-    inset:0;
-    border-radius:16px 5px 5px 16px;
-    z-index:3;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    background:linear-gradient(160deg, var(--coral), var(--gold));
-    box-shadow:0 18px 40px rgba(0,0,0,0.45), inset 5px 0 10px rgba(0,0,0,0.22);
-    transform-origin:left center;
-    backface-visibility:hidden;
-    -webkit-backface-visibility:hidden;
-    transition:transform 0.8s cubic-bezier(.3,.7,.2,1), box-shadow 0.8s ease;
-  }
- 
-  /* book spine */
-  .wrap-cover::before{
-    content:"";
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:11px;
-    background:rgba(0,0,0,0.2);
-    border-radius:16px 0 0 16px;
-  }
- 
-  .wrap-cover .wrap-emoji{
-    font-size:44px;
-    animation:giftBounce 2.4s ease-in-out infinite;
-    filter:drop-shadow(0 10px 18px rgba(0,0,0,0.35));
-  }
- 
-  .wrap-cover .wrap-label{
-    font-family:'Caveat',cursive;
-    font-size:16px;
-    font-weight:600;
-    color:var(--paper);
-    letter-spacing:0.01em;
-  }
- 
-  .wrap-cover.opened{
-    transform:rotateY(-115deg);
-    box-shadow:0 6px 18px rgba(0,0,0,0.2);
-    pointer-events:none;
-  }
- 
-  .photo-card .flip-btn{
-    margin-top:14px;
-    padding:9px 22px;
-    font-size:13px;
-    opacity:0.5;
-    pointer-events:none;
-    transition:opacity 0.4s ease;
-  }
- 
-  .photo-card.unwrapped .flip-btn{
-    opacity:1;
-    pointer-events:auto;
-  }
- 
-  /* ============ end gallery styles ============ */
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Birthday Surprise</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
- /* ============ friendship stats slide ============ */
+  <style>
+    :root{
+      --ink:#2d1b4e;
+      --ink-deep:#1a0f30;
+      --gold:#ff9a56;
+      --gold-soft:#ffc17a;
+      --coral:#ff5e7e;
+      --paper:#fff0e6;
+      --line:rgba(255,154,86,.32);
+    }
 
-  .stats-grid{
-    display:flex;
-    justify-content:center;
-    gap:36px;
-    margin-top:44px;
-    flex-wrap:wrap;
-  }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100%;height:100%}
 
-  .stat-item{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    min-width:130px;
-  }
+    body{
+      font-family:Caveat,cursive;
+      background:
+        radial-gradient(circle at 50% 100%,rgba(255,94,126,.35),transparent 55%),
+        radial-gradient(circle at 20% 20%,rgba(255,154,86,.25),transparent 45%),
+        radial-gradient(circle at 85% 15%,rgba(255,193,122,.2),transparent 50%),
+        linear-gradient(180deg,var(--ink-deep),var(--ink));
+      color:var(--paper);
+      display:grid;
+      place-items:center;
+      overflow-x:hidden;
+    }
 
-  .stat-num{
-    font-family:'Caveat',cursive;
-    font-weight:700;
-    font-size:clamp(40px, 7vw, 58px);
-    color:var(--gold);
-    line-height:1;
-    text-shadow:0 0 18px rgba(255,154,86,0.4);
-  }
+    .stars,.balloon-field{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+    }
 
-  .stat-label{
-    margin-top:8px;
-    font-size:15px;
-    color:rgba(246,239,227,0.78);
-    letter-spacing:0.02em;
-    max-width:150px;
-  }
+    .stars{z-index:0}
 
-  /* ============ gift teaser slide ============ */
+    .stars span{
+      position:absolute;
+      width:2px;
+      height:2px;
+      background:var(--gold-soft);
+      border-radius:50%;
+      animation:twinkle 3.5s ease-in-out infinite;
+    }
 
-  .gift-teaser{
-    display:flex;
-    justify-content:center;
-    margin:36px 0 6px;
-  }
+    @keyframes twinkle{
+      0%,100%{opacity:.15}
+      50%{opacity:.85}
+    }
 
-  .gift-teaser-emoji{
-    font-size:72px;
-    display:inline-block;
-    animation:giftBounce 1.8s ease-in-out infinite;
-    filter:drop-shadow(0 14px 22px rgba(0,0,0,0.4));
-  }
+    .stage{
+      width:min(92%,760px);
+      position:relative;
+      z-index:1;
+      text-align:center;
+      padding:34px 0 62px;
+    }
 
-  /* ============ end new slide styles ============ */
+    .slide{display:none}
 
-  /* ============ tap for a reason ============ */
+    .slide.active{
+      display:block;
+      animation:rise .75s cubic-bezier(.2,.8,.2,1);
+    }
 
-  .reason-box{
-    margin:34px auto 0;
-    max-width:520px;
-    min-height:96px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:26px 30px;
-    border-radius:16px;
-    background:rgba(242,181,68,0.07);
-    border:1px solid var(--line);
-  }
+    @keyframes rise{
+      from{opacity:0;transform:translateY(28px)}
+      to{opacity:1;transform:translateY(0)}
+    }
 
-  .reason-box p{
-    margin:0;
-    max-width:none;
-    font-size:19px;
-    color:var(--gold-soft);
-    line-height:1.6;
-    transition:opacity 0.25s ease, transform 0.25s ease;
-  }
+    .eyebrow{
+      font-family:Poppins,sans-serif;
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:16px;
+    }
 
-  .reason-box p.swap{
-    opacity:0;
-    transform:translateY(6px);
-  }
+    h1{
+      font-size:clamp(38px,7vw,68px);
+      font-weight:600;
+      line-height:1.05;
+    }
 
-  .reason-tap-count{
-    margin-top:12px;
-    font-size:13px;
-    color:rgba(246,239,227,0.5);
-    letter-spacing:0.04em;
-  }
+    h1.small{font-size:clamp(30px,5vw,44px)}
 
-  /* ============ end tap for a reason ============ */
+    .accent{
+      color:var(--gold);
+      font-style:italic;
+      font-weight:500;
+    }
 
-/* ============ memory quiz ============ */
+    p{
+      font-size:20px;
+      line-height:1.55;
+      color:rgba(255,240,230,.86);
+      max-width:570px;
+      margin:22px auto 0;
+    }
 
-  .quiz-box{
-    margin:34px auto 0;
-    max-width:560px;
-    text-align:left;
-  }
+    button{
+      font-family:Caveat,cursive;
+      font-size:20px;
+      font-weight:600;
+      padding:12px 28px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      margin-top:28px;
+      cursor:pointer;
+      background:rgba(255,255,255,.12);
+      color:var(--paper);
+      transition:.3s;
+    }
 
-  .quiz-question{
-    font-size:20px;
-    color:var(--paper);
-    margin-bottom:18px;
-    text-align:center;
-    font-family:'Caveat',cursive;
-    font-weight:600;
-  }
+    button:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      transform:translateY(-2px);
+    }
 
-  .quiz-options{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
+    button:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none;
+    }
 
-  .quiz-option{
-    font-family:'Caveat',cursive;
-    font-size:17px;
-    padding:14px 20px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.05);
-    color:var(--paper);
-    cursor:pointer;
-    text-align:center;
-    transition:0.25s ease;
-  }
+    .ribbon-stage{
+      height:130px;
+      max-width:460px;
+      margin:42px auto 12px;
+      position:relative;
+      cursor:pointer;
+      filter:drop-shadow(0 14px 18px rgba(0,0,0,.28));
+    }
 
-  .quiz-option:hover{
-    background:rgba(242,181,68,0.14);
-    transform:translateY(-2px);
-  }
+    .ribbon-half{
+      position:absolute;
+      top:48px;
+      width:50%;
+      height:34px;
+      background:linear-gradient(180deg,#ff8fa5,var(--coral));
+      transition:transform .65s ease;
+    }
 
-  .quiz-option.correct{
-    background:rgba(120,200,140,0.22);
-    border-color:#78c88c;
-  }
+    .ribbon-left{
+      left:0;
+      border-radius:18px 0 0 18px;
+    }
 
-  .quiz-option.incorrect{
-    background:rgba(255,94,126,0.2);
-    border-color:var(--coral);
-  }
+    .ribbon-right{
+      right:0;
+      border-radius:0 18px 18px 0;
+    }
 
-  .quiz-option.disabled{
-    pointer-events:none;
-    opacity:0.9;
-  }
+    .ribbon-bow{
+      position:absolute;
+      z-index:2;
+      left:50%;
+      top:16px;
+      transform:translateX(-50%);
+      font-size:82px;
+      line-height:1;
+      transition:.55s;
+    }
 
-  .quiz-feedback{
-    margin-top:14px;
-    font-size:15px;
-    color:var(--gold-soft);
-    text-align:center;
-    min-height:20px;
-  }
+    .ribbon-stage.cut .ribbon-left{
+      transform:translateX(-120%) rotate(-12deg);
+    }
 
-  .quiz-progress{
-    margin-top:18px;
-    font-size:13px;
-    color:rgba(246,239,227,0.5);
-    text-align:center;
-    letter-spacing:0.04em;
-  }
+    .ribbon-stage.cut .ribbon-right{
+      transform:translateX(120%) rotate(12deg);
+    }
 
-  .quiz-result{
-    font-size:21px;
-    color:var(--gold);
-    text-align:center;
-    font-family:'Caveat',cursive;
-    font-weight:600;
-    margin-bottom:6px;
-  }
+    .ribbon-stage.cut .ribbon-bow{
+      opacity:0;
+      transform:translateX(-50%) scale(.2) rotate(180deg);
+    }
 
-  .quiz-box button{
-    display:block;
-    margin:8px auto 0;
-  }
+    .gift-hint{
+      font-size:20px;
+      color:var(--gold-soft);
+    }
 
-  /* ============ end memory quiz ============ */
- /* ============ cursor sparkle trail ============ */
+    .candle-wrap{
+      display:flex;
+      justify-content:center;
+      margin:42px 0 8px;
+      cursor:pointer;
+    }
 
-  .sparkle{
-    position:fixed;
-    pointer-events:none;
-    z-index:8;
-    border-radius:50%;
-    background:radial-gradient(circle, #fff6d8, var(--gold) 55%, transparent 72%);
-    animation:sparkleFade 0.85s ease-out forwards;
-  }
+    .candle{
+      width:28px;
+      height:104px;
+      background:linear-gradient(90deg,#c23e5c,var(--coral),#c23e5c);
+      border-radius:7px;
+      position:relative;
+      box-shadow:inset -4px 0 8px rgba(0,0,0,.25);
+    }
 
-  @keyframes sparkleFade{
-    0%{ transform:translate(-50%,-50%) scale(1); opacity:0.9; }
-    100%{ transform:translate(-50%,-50%) translateY(-26px) scale(0.2); opacity:0; }
-  }
+    .flame{
+      width:17px;
+      height:28px;
+      background:radial-gradient(circle at 50% 30%,#fff6d8,var(--gold) 55%,var(--coral));
+      border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+      position:absolute;
+      top:-24px;
+      left:50%;
+      transform:translateX(-50%);
+      animation:flicker 1.4s ease-in-out infinite;
+      filter:drop-shadow(0 0 12px rgba(255,193,122,.8));
+    }
 
-  /* ============ end cursor sparkle trail ============ */
-  /* progress dots */
-  .dots{
-    display:flex;
-    justify-content:center;
-    gap:9px;
-    margin-top:46px;
-  }
-  .dots span{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:rgba(242,181,68,0.25);
-    transition:0.3s ease;
-  }
-  .dots span.on{
-    background:var(--gold);
-    box-shadow:0 0 8px rgba(242,181,68,0.8);
-  }
- 
-  @media (max-width:640px){
-    .flip-scene{ width:150px; height:150px; }
-    .wrap-cover .wrap-emoji{ font-size:38px; }
-    p{ font-size:15.5px; }
-  }
- 
-  @media (prefers-reduced-motion: reduce){
-    .flame, .stars span, .slide.active, .wrap-cover .wrap-emoji{ animation:none; }
-  }
- 
- 
-/* --- ribbon-cutting intro screen --- */
-@keyframes giftBounce{
-  0%,100%{ transform:translateY(0) rotate(-4deg); }
-  50%{ transform:translateY(-12px) rotate(4deg); }
-}
- 
-.ribbon-stage{
-  position:relative;
-  width:100%;
-  max-width:1000px;
-  height:64px;
-  margin:40px auto 8px;
-  display:flex;
-  align-items:center;
-  cursor:pointer;
-}
- 
-.ribbon-half{
-  flex:1;
-  height:20px;
-  background:
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.16) 0 10px, transparent 10px 20px),
-    linear-gradient(90deg, var(--coral), var(--gold));
-  box-shadow:0 10px 22px rgba(0,0,0,0.35);
-  position:relative;
-  transition:transform 0.85s cubic-bezier(.3,.7,.2,1), opacity 0.85s ease;
-}
- 
-.ribbon-half::after{
-  content:"";
-  position:absolute;
-  top:0; bottom:0;
-  width:14px;
-  background:rgba(0,0,0,0.18);
-}
- 
-.ribbon-left{
-  border-radius:5px 0 0 5px;
-  transform-origin:left center;
-}
-.ribbon-left::after{ right:-1px; }
- 
-.ribbon-right{
-  border-radius:0 5px 5px 0;
-  transform-origin:right center;
-}
-.ribbon-right::after{ left:-1px; }
- 
-.ribbon-bow{
-  font-size:48px;
-  line-height:1;
-  padding:0 6px;
-  z-index:2;
-  flex:none;
-  filter:drop-shadow(0 10px 18px rgba(0,0,0,0.35));
-  animation:giftBounce 2.4s ease-in-out infinite;
-  transition:transform 0.5s ease, opacity 0.5s ease;
-}
- 
-.ribbon-stage.cut{ pointer-events:none; }
- 
-.ribbon-stage.cut .ribbon-left{
-  transform:translateY(90px) rotate(-30deg);
-  opacity:0;
-}
-.ribbon-stage.cut .ribbon-right{
-  transform:translateY(90px) rotate(30deg);
-  opacity:0;
-}
-.ribbon-stage.cut .ribbon-bow{
-  animation:none;
-  transform:scale(0.6) translateY(50px);
-  opacity:0;
-}
- 
-.gift-hint{
-  font-size:14px;
-  letter-spacing:0.08em;
-  color:var(--gold-soft);
-  opacity:0.85;
-  margin-top:10px;
-}
- 
-</style>
+    @keyframes flicker{
+      50%{transform:translateX(-50%) scale(1.1) rotate(3deg)}
+    }
+
+    .flame.blown{
+      animation:none;
+      opacity:0;
+      transform:translateX(-50%) scale(0);
+      transition:.35s;
+    }
+
+    .smoke{
+      position:absolute;
+      top:-24px;
+      left:50%;
+      width:12px;
+      height:12px;
+      background:rgba(255,240,230,.65);
+      border-radius:50%;
+      filter:blur(3px);
+      animation:smoke 1.1s ease-out forwards;
+    }
+
+    @keyframes smoke{
+      to{
+        transform:translate(-50%,-70px) scale(2.2);
+        opacity:0;
+      }
+    }
+
+    .balloon-field{
+      z-index:5;
+      overflow:hidden;
+    }
+
+    .balloon{
+      position:absolute;
+      bottom:-140px;
+      width:46px;
+      height:58px;
+      border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+      animation:floatUp var(--time) ease-in forwards;
+    }
+
+    .balloon:after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-23px;
+      width:1px;
+      height:23px;
+      background:rgba(255,240,230,.45);
+    }
+
+    @keyframes floatUp{
+      to{
+        transform:translate(var(--drift),-115vh) rotate(var(--tilt));
+        opacity:0;
+      }
+    }
+
+    .reason-box,.quiz-box{
+      margin:30px auto 0;
+      max-width:560px;
+      padding:25px;
+      border:1px solid var(--line);
+      background:rgba(255,193,122,.07);
+      border-radius:16px;
+    }
+
+    .reason-box p{
+      margin:0;
+      color:var(--gold-soft);
+      font-size:24px;
+    }
+
+    .reason-count{
+      font-family:Poppins,sans-serif;
+      font-size:12px;
+      letter-spacing:.08em;
+      color:rgba(255,240,230,.55);
+      margin-top:12px;
+    }
+
+    .cards{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      margin-top:36px;
+      flex-wrap:wrap;
+    }
+
+    .cards button{
+      margin:0;
+      max-width:330px;
+      padding:30px;
+      font-size:24px;
+    }
+
+    .gallery{
+      display:flex;
+      justify-content:center;
+      gap:26px;
+      margin-top:34px;
+      flex-wrap:wrap;
+    }
+
+    .photo-card{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .flip-scene{
+      width:220px;
+      height:220px;
+      position:relative;
+      perspective:1000px;
+    }
+
+    .flip-inner{
+      width:100%;
+      height:100%;
+      position:relative;
+      transform-style:preserve-3d;
+      transition:transform .7s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .photo-card.flipped .flip-inner{
+      transform:rotateY(180deg);
+    }
+
+    .flip-front,.flip-back{
+      position:absolute;
+      inset:0;
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      backface-visibility:hidden;
+      box-shadow:0 18px 40px rgba(0,0,0,.4);
+    }
+
+    .flip-front img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .flip-back{
+      transform:rotateY(180deg);
+      display:grid;
+      place-items:center;
+      padding:18px;
+      background:linear-gradient(160deg,rgba(255,94,126,.28),rgba(255,154,86,.2));
+    }
+
+    .flip-back p{
+      margin:0;
+      font-size:18px;
+    }
+
+    .wrap-cover{
+      position:absolute;
+      z-index:3;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      cursor:pointer;
+      border-radius:16px 5px 5px 16px;
+      background:linear-gradient(160deg,var(--coral),var(--gold));
+      transform-origin:left center;
+      transition:transform .8s cubic-bezier(.3,.7,.2,1);
+      box-shadow:0 18px 40px rgba(0,0,0,.45);
+    }
+
+    .wrap-cover.opened{
+      pointer-events:none;
+      transform:rotateY(-115deg);
+    }
+
+    .wrap-emoji{font-size:46px}
+
+    .wrap-label{
+      font-size:22px;
+      font-weight:600;
+    }
+
+    .flip-btn{
+      margin-top:14px;
+      padding:7px 21px;
+      font-size:18px;
+      opacity:.45;
+      pointer-events:none;
+    }
+
+    .photo-card.unwrapped .flip-btn{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .quiz-box{text-align:left}
+
+    .quiz-question{
+      font-size:25px;
+      color:var(--paper);
+      margin-bottom:16px;
+    }
+
+    .quiz-options{
+      display:grid;
+      gap:10px;
+    }
+
+    .quiz-option{
+      font-family:Poppins,sans-serif;
+      text-align:left;
+      font-size:14px;
+      padding:13px 16px;
+      margin:0;
+      border-radius:10px;
+    }
+
+    .quiz-option.correct{
+      background:#5aae78;
+      border-color:#5aae78;
+    }
+
+    .quiz-option.wrong{
+      background:#bd5268;
+      border-color:#bd5268;
+    }
+
+    .quiz-result{
+      text-align:center;
+      margin-top:16px;
+      color:var(--gold-soft);
+      font-size:22px;
+    }
+
+    .stats-grid{
+      display:flex;
+      justify-content:center;
+      gap:36px;
+      margin-top:40px;
+      flex-wrap:wrap;
+    }
+
+    .stat-item{min-width:130px}
+
+    .stat-num{
+      font-size:clamp(50px,8vw,68px);
+      font-weight:700;
+      color:var(--gold);
+      line-height:1;
+      text-shadow:0 0 18px rgba(255,154,86,.4);
+    }
+
+    .stat-label{
+      font-family:Poppins,sans-serif;
+      font-size:13px;
+      margin-top:8px;
+      color:rgba(255,240,230,.78);
+    }
+
+    .gift-teaser-emoji{
+      font-size:86px;
+      display:inline-block;
+      margin-top:30px;
+      animation:bounce 1.8s ease-in-out infinite;
+    }
+
+    @keyframes bounce{
+      50%{transform:translateY(-10px) rotate(5deg)}
+    }
+
+    .dots{
+      position:fixed;
+      z-index:4;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:8px;
+    }
+
+    .dot{
+      height:7px;
+      width:7px;
+      border-radius:50%;
+      background:rgba(255,240,230,.32);
+    }
+
+    .dot.active{
+      background:var(--gold);
+      transform:scale(1.35);
+    }
+
+    @media(max-width:530px){
+      .gallery{gap:18px}
+      .flip-scene{width:190px;height:190px}
+      .stage{padding-top:24px}
+      p{font-size:18px}
+    }
+  </style>
 </head>
- 
+
 <body>
- 
-<div class="stars" id="stars"></div>
-<div class="balloon-field" id="balloonField"></div>
- 
- 
-<div class="stage">
- 
-<!-- Slide 0: Ribbon-Cutting Intro -->
-<div class="slide active" id="slide0">
-  <div class="eyebrow">Some Surprise is waiting for you inside the website!!</div>
-  <h1><span class="accent"> Cut the ribbon to begin surprise 🧁🎉✨</span></h1>
-  <div class="ribbon-stage" id="ribbonStage" onclick="cutRibbon()">
-    <div class="ribbon-half ribbon-left"></div>
-    <div class="ribbon-bow">🎀</div>
-    <div class="ribbon-half ribbon-right"></div>
-  </div>
-  <p class="gift-hint"><h4> Tap the bow to cut the ribbon 🪄</h4></p>
-</div>
- 
- 
-  <!-- Slide 1 -->
-  <div class="slide" id="slide1">
-    <div class="eyebrow">A little something for you</div>
-    <h1><span class="accent"> Happy Birthday Dear Balaji 🎉</span></h1>
-    <div class="candle-wrap" onclick="blowCandle()">
-      <div class="candle"><div class="flame" id="flame"></div></div>
-    </div>
-    <p>Cheers to <span id="ageCounter">0</span> </p>
-    <button onclick="blowCandle()" id="blowBtn">Blow the candle 🎉</button>
-  </div>
- 
-  <!-- Slide 2 -->
-  <div class="slide" id="slide2">
-    <div class="eyebrow">Dear Balaji</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">A few things<br><span class="accent">worth saying</span></h1>
-    <p>
- 
-Happy Birthday to one of the most amazing friend I know.
-      Thank you for all the laughs, memories, and moments that made life better.
-      May this year bring you success, happiness, adventures, and everything you've been working for.
-      And thank you for showing up for me every time I needed you.
- 
-    </p>
-    <button onclick="nextSlide()">Keep going</button>
-  </div>
- <!-- Slide 3: Tap for a Reason (NEW) -->
-  <div class="slide" id="slide3">
-    <div class="eyebrow">In case you needed reminding</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">Reasons I <span class="accent">appreciate you</span></h1>
-    <p>Tap the button as many times as you like 💛</p>
-    <div class="reason-box">
-      <p id="reasonText">Tap below to reveal a reason ✨</p>
-    </div>
-    <div class="" id="reasonCount"></div>
-    <button onclick="showReason()">Tap for a reason 💛</button>
-    <br>
-    <button onclick="nextSlide()" style="opacity:0.7;">Continue</button>
-  </div>
+  <audio id="birthdayMusic" loop preload="auto">
+    <source src="happy-birthday.mp3" type="audio/mpeg">
+  </audio>
 
- 
-  <!-- Slide 3 -->
-  <div class="slide" id="slide3">
-    <div class="eyebrow">Something special</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">Choose your <span class="accent">surprise</span></h1>
-    <p> 🫣✨ A Little Surprise Awaits... ✨🫣  </p>
-    <div class="cards">
-      <div onclick="nextSlide()">👀🎁 Something Special Is Hidden For You.. <br> Some cute memories together 👀🎁</div>
-    </div>
-  </div>
- 
-  <!-- Slide 4 -->
-  <div class="slide" id="slide4">
-    <div class="eyebrow">Looking back</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">Our <span class="accent">memories</span></h1>
-    <p>Tap each gift to unwrap the photo, then hit "Flip" to read the moment behind it</p>
-    <div class="gallery">
-      <!--
-        This file lives directly inside the HBD folder, along with the photos:
-          HBD/
-            balaji_birthday.html
-            1.jpg
-            2.jpg
-            3.jpg
-            4.jpg
-        Since the photos sit right next to this HTML file, the paths below
-        are just the filenames themselves — no subfolder needed.
- 
-        Edit the text inside each .flip-back <p> below to change what shows
-        up on the back of each photo.
-      -->
- 
-      <div class="photo-card">
-        <div class="flip-scene">
-          <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📖</span>
-            <span class="wrap-label">Unwrap Me!</span>
-          </div>
-          <div class="flip-inner">
-            <div class="flip-front"><img src="1.jpg" alt="Cute Memories"></div>
-            <div class="flip-back"><p>1st time at AppleBee's confused what food to order, makes me laugh when I look back at it 😂</p></div>
-          </div>
-        </div>
-        <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
-      </div>
- 
-      <div class="photo-card">
-        <div class="flip-scene">
-          <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📖</span>
-            <span class="wrap-label">Unwrap Me!</span>
-          </div>
-          <div class="flip-inner">
-            <div class="flip-front"><img src="2.jpg" alt="Cute Memories"></div>
-            <div class="flip-back"><p>This one always makes me laugh when I look back at it 😂</p></div>
-          </div>
-        </div>
-        <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
-      </div>
- 
-      <div class="photo-card">
-        <div class="flip-scene">
-          <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📖</span>
-            <span class="wrap-label">Unwrap Me!</span>
-          </div>
-          <div class="flip-inner">
-            <div class="flip-front"><img src="3.jpg" alt="Cute Memories"></div>
-            <div class="flip-back"><p>One of my favorite days with you, hands down 💛</p></div>
-          </div>
-        </div>
-        <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
-      </div>
- 
-      <div class="photo-card">
-        <div class="flip-scene">
-          <div class="wrap-cover" onclick="unwrapPhoto(this)">
-            <span class="wrap-emoji">📖</span>
-            <span class="wrap-label">Unwrap Me!</span>
-          </div>
-          <div class="flip-inner">
-            <div class="flip-front"><img src="4.jpg" alt="Cute Memories"></div>
-            <div class="flip-back"><p>The dish we ordered at Applebee's turned out extraordinary — must try again 💛</p></div>
-          </div>
-        </div>
-        <button class="flip-btn" onclick="flipCard(this)">Flip ↺</button>
-      </div>
-    </div>
-    <button onclick="nextSlide()">Continue 🎁</button>
-  </div>
+  <div class="stars" aria-hidden="true" id="stars"></div>
+  <div class="balloon-field" id="balloons" aria-hidden="true"></div>
 
- <!-- Slide 5: Memory Quiz (NEW) -->
-  <div class="slide" id="slide5">
-    <div class="eyebrow">Test time</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">How well do <span class="accent">you know us?</span></h1>
-    <p>A few questions before the next reveal 👀</p>
-    <div class="quiz-box" id="quizBox"></div>
-    <div class="quiz-progress" id="quizProgress"></div>
-  </div>
+  <main class="stage">
 
-  <!-- Slide 6: Friendship Stats (was slide 5) -->
-  <div class="slide" id="slide6">
-    <div class="eyebrow">A little math</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">By the <span class="accent">numbers</span></h1>
-    <p>Some very official, very scientific friendship stats 📊</p>
-    <div class="stats-grid">
-      <div class="stat-item">
-        <span class="stat-num" id="stat1">0</span>
-        <span class="stat-label">years of friendship</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" id="stat2">0</span>
-        <span class="stat-label">inside jokes and counting</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">∞</span>
-        <span class="stat-label">Walmart's visits</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">100%</span>
-        <span class="stat-label">best friend status</span>
-      </div>
-    </div>
-    <button onclick="nextSlide()">Continue</button>
-  </div>
+    <section class="slide active" id="slide0">
+      <div class="eyebrow">Some surprise is waiting for you inside</div>
+      <h1>
+        <span class="accent">Cut the ribbon to begin the surprise 🧁🎉✨</span>
+      </h1>
 
-  <!-- Slide 7: Gift Teaser (was slide 6) -->
-  <div class="slide" id="slide7">
-    <div class="eyebrow">Not just this</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">The real gift is <span class="accent">on its way</span> 📦</h1>
-    <div class="gift-teaser">
-      <span class="gift-teaser-emoji">🎁</span>
-    </div>
-    <p>This page is only half the surprise. Some gifts are on your way — keep an eye out 👀</p>
-    <button onclick="nextSlide()">Continue</button>
-  </div>
- 
-  <!-- Slide 5 (was slide 6) -->
-  <div class="slide" id="slide5">
-    <div class="eyebrow">All done</div>
-    <h1 style="font-size:clamp(30px,5vw,44px);">Surprise <span class="accent">complete</span></h1>
-    <p>Keep guessing your gift and it will get reach you soon 📦🧸</p>
-    <h2>Happy Birthday, Balaji 🪄✨</h2>
-   <button onclick="restartExperience()">↺ Start Over</button>
-  </div>
- 
-  <div class="dots" id="dots"></div>
- 
-</div>
- 
-<!----Javascript---->
- 
-<script>
-  const totalSlides = 8;
-  let current = 1;
- 
-  function countUpAge(){
-  const el = document.getElementById("ageCounter");
-  if (!el) return;
-  const target = 27;
-  let value = 0;             // renamed from "current" to "value"
-  el.textContent = value;
-  const stepTime = 7000 / target;
-  const interval = setInterval(() => {
-    value++;
-    el.textContent = value;
-    if (value >= target) clearInterval(interval);
-  }, stepTime);
-}
- 
-  function renderDots(){
-    const dotsEl = document.getElementById("dots");
-    dotsEl.innerHTML = "";
-    for (let i = 1; i <= totalSlides; i++){
-      const d = document.createElement("span");
-      if (i === current) d.classList.add("on");
-      dotsEl.appendChild(d);
+      <div class="ribbon-stage" id="ribbonStage" role="button" tabindex="0" aria-label="Cut the ribbon">
+        <div class="ribbon-half ribbon-left"></div>
+        <div class="ribbon-bow">🎀</div>
+        <div class="ribbon-half ribbon-right"></div>
+      </div>
+
+      <div class="gift-hint">Tap the bow to cut the ribbon 🪄</div>
+    </section>
+
+    <section class="slide" id="slide1">
+      <div class="eyebrow">A little something for you</div>
+      <h1><span class="accent">Happy Birthday Dear Balaji 🎉</span></h1>
+
+      <div class="candle-wrap" id="candleWrap">
+        <div class="candle">
+          <div class="flame" id="flame"></div>
+        </div>
+      </div>
+
+      <p>Cheers to <span id="ageCounter">0</span> 🎂</p>
+      <button id="blowBtn">Blow the candle 🎉</button>
+    </section>
+
+    <section class="slide" id="slide2">
+      <div class="eyebrow">Dear Balaji</div>
+      <h1 class="small">A few things<br><span class="accent">worth saying</span></h1>
+
+      <p>
+        Happy Birthday to one of the most amazing friends I know. Thank you for all the laughs,
+        memories, and moments that made life better. May this year bring you success, happiness,
+        adventures, and everything you've been working for. And thank you for showing up for me
+        every time I needed you.
+      </p>
+
+      <button data-next>Keep going</button>
+    </section>
+
+    <section class="slide" id="slide3">
+      <div class="eyebrow">In case you needed reminding</div>
+      <h1 class="small">Reasons I <span class="accent">appreciate you</span></h1>
+
+      <p>Tap the button as many times as you like 💛</p>
+
+      <div class="reason-box">
+        <p id="reasonText">Tap below to reveal a reason ✨</p>
+      </div>
+
+      <div class="reason-count" id="reasonCount"></div>
+
+      <button id="reasonBtn">Tap for a reason 💛</button>
+      <br>
+      <button data-next>Continue</button>
+    </section>
+
+    <section class="slide" id="slide4">
+      <div class="eyebrow">Something special</div>
+      <h1 class="small">Choose your <span class="accent">surprise</span></h1>
+
+      <p>🫣✨ A little surprise awaits… ✨🫣</p>
+
+      <div class="cards">
+        <button data-next>
+          👀🎁 Something special is hidden for you…<br>
+          Some cute memories together 👀🎁
+        </button>
+      </div>
+    </section>
+
+    <section class="slide" id="slide5">
+      <div class="eyebrow">Looking back</div>
+      <h1 class="small">Our <span class="accent">memories</span></h1>
+
+      <p>Tap each gift to unwrap the photo, then hit “Flip” to read the moment behind it.</p>
+
+      <div class="gallery" id="gallery"></div>
+
+      <button data-next>More surprises</button>
+    </section>
+
+    <section class="slide" id="slide6">
+      <div class="eyebrow">How well do you remember?</div>
+      <h1 class="small">Memory <span class="accent">quiz</span> 🧠</h1>
+
+      <div class="quiz-box" id="quizBox"></div>
+    </section>
+
+    <section class="slide" id="slide7">
+      <div class="eyebrow">Us, in numbers</div>
+      <h1 class="small">Friendship <span class="accent">stats</span> 📊</h1>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num" id="stat1">0</div>
+          <div class="stat-label">amazing friendship</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-num" id="stat2">0</div>
+          <div class="stat-label">memories and counting</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-num" id="stat3">0</div>
+          <div class="stat-label">reasons you are awesome</div>
+        </div>
+      </div>
+
+      <button data-next>One last thing</button>
+    </section>
+
+    <section class="slide" id="slide8">
+      <div class="eyebrow">The real gift</div>
+      <h1 class="small">A little <span class="accent">something</span> is on its way 🎁</h1>
+
+      <div class="gift-teaser-emoji">🎁</div>
+
+      <p>
+        Consider this a tiny teaser for the happiness, adventures,
+        and good things waiting ahead.
+      </p>
+
+      <button data-next>Open the final surprise</button>
+    </section>
+
+    <section class="slide" id="slide9">
+      <div class="eyebrow">Made with lots of love</div>
+      <h1>Surprise <span class="accent">complete!</span> 🎉</h1>
+
+      <p>
+        Wishing you the happiest birthday and a year that is every bit as
+        wonderful as you are. Keep shining, Balaji! ✨
+      </p>
+
+      <button id="restartBtn">↺ Start over</button>
+    </section>
+
+  </main>
+
+  <div class="dots" id="dots" hidden></div>
+
+  <script>
+    const totalSlides = 9;
+
+    let current = 0;
+    let ageTimer = null;
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizStarted = false;
+    let statsAnimated = false;
+    let reasonIndex = 0;
+
+    const reasons = [
+      "You always show up when it matters.",
+      "You make ordinary moments hilarious.",
+      "You are genuinely kind and thoughtful.",
+      "Every memory with you becomes a good story.",
+      "You deserve all the good things coming your way.",
+      "You are the kind of friend everyone needs."
+    ];
+
+    const photos = [
+      ["1.jpg", "1st time at Applebee’s, confused about what food to order — it still makes me laugh 😂"],
+      ["2.jpg", "One of those little moments that became a favourite memory."],
+      ["3.jpg", "More laughter, more memories, and always a good time."],
+      ["4.jpg", "Here’s to many more adventures together! ✨"]
+    ];
+
+    const quiz = [
+      {
+        question: "Where did we meet first?",
+        options: [
+          "NYIT",
+          "St. Francis College",
+          "Harrison PATH Station",
+          "None of the above"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "What makes our friendship special?",
+        options: [
+          "The laughs",
+          "The memories",
+          "Always being there",
+          "All of the above"
+        ],
+        correctIndex: 3
+      },
+      {
+        question: "What should this next year bring you?",
+        options: [
+          "Success",
+          "Happiness",
+          "Amazing adventures",
+          "All of the above"
+        ],
+        correctIndex: 3
+      }
+    ];
+
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => document.querySelectorAll(selector);
+
+    function makeStars(){
+      for(let i = 0; i < 70; i++){
+        const star = document.createElement("span");
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.animationDelay = Math.random() * 3.5 + "s";
+        $("#stars").append(star);
+      }
     }
-  }
- 
-  function goToSlide(n){
-    if (n < 1 || n > totalSlides || n === current) return;
-    document.getElementById("slide" + current).classList.remove("active");
-    current = n;
-    document.getElementById("slide" + current).classList.add("active");
-    renderDots();
-    if (n === totalSlides){
-      launchBalloons(10);
+
+    function renderGallery(){
+      $("#gallery").innerHTML = photos.map(([src, text], i) => `
+        <article class="photo-card">
+          <div class="flip-scene">
+            <div class="wrap-cover" data-unwrap="${i}">
+              <span class="wrap-emoji">📖</span>
+              <span class="wrap-label">Unwrap me!</span>
+            </div>
+
+            <div class="flip-inner">
+              <div class="flip-front">
+                <img src="${src}" alt="Memory ${i + 1}">
+              </div>
+
+              <div class="flip-back">
+                <p>${text}</p>
+              </div>
+            </div>
+          </div>
+
+          <button class="flip-btn" data-flip="${i}">Flip ↺</button>
+        </article>
+      `).join("");
     }
-  }
- 
-  function nextSlide(){
-    goToSlide(current + 1);
-  }
- 
-  let candleBlown = false;
- 
-  function blowCandle(){
-    if (candleBlown) return;
-    candleBlown = true;
- 
-    const flame = document.getElementById("flame");
-    const blowBtn = document.getElementById("blowBtn");
-    if (blowBtn) blowBtn.disabled = true;
- 
-    // puff out the flame + a little smoke wisp
-    if (flame){
+
+    function renderDots(){
+      const dots = $("#dots");
+      dots.hidden = current === 0;
+
+      dots.innerHTML = Array.from({ length: totalSlides }, (_, i) => `
+        <span class="dot ${i + 1 === current ? "active" : ""}"></span>
+      `).join("");
+    }
+
+    function goToSlide(n){
+      if(n < 0 || n > totalSlides || n === current) return;
+
+      const oldSlide = $("#slide" + current);
+      const nextSlide = $("#slide" + n);
+
+      if(!nextSlide) return;
+
+      if(oldSlide) oldSlide.classList.remove("active");
+
+      current = n;
+      nextSlide.classList.add("active");
+
+      renderDots();
+
+      if(n === 1) countUpAge();
+      if(n === 6) startQuizIfNeeded();
+      if(n === 7) animateStats();
+      if(n === 9) launchBalloons(12);
+    }
+
+    function nextSlide(){
+      goToSlide(current + 1);
+    }
+
+    function launchBalloons(count = 10){
+      const colors = ["#ff5e7e", "#ff9a56", "#ffc17a", "#b78cff", "#75d6c9"];
+
+      for(let i = 0; i < count; i++){
+        const balloon = document.createElement("span");
+
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * 100 + "%";
+        balloon.style.background = colors[i % colors.length];
+        balloon.style.setProperty("--drift", (Math.random() * 160 - 80) + "px");
+        balloon.style.setProperty("--tilt", (Math.random() * 70 - 35) + "deg");
+        balloon.style.setProperty("--time", (4 + Math.random() * 2.5) + "s");
+
+        $("#balloons").append(balloon);
+
+        setTimeout(() => balloon.remove(), 7000);
+      }
+    }
+
+    function cutRibbon(){
+      const ribbon = $("#ribbonStage");
+
+      if(ribbon.classList.contains("cut")) return;
+
+      ribbon.classList.add("cut");
+
+      const music = $("#birthdayMusic");
+      music.volume = 0.5;
+      music.play().catch(() => {});
+
+      launchBalloons(12);
+
+      setTimeout(() => {
+        goToSlide(1);
+      }, 650);
+    }
+
+    function countUpAge(){
+      clearInterval(ageTimer);
+
+      let age = 0;
+      const target = 27;
+
+      $("#ageCounter").textContent = 0;
+
+      ageTimer = setInterval(() => {
+        age++;
+        $("#ageCounter").textContent = age;
+
+        if(age >= target){
+          clearInterval(ageTimer);
+        }
+      }, 2500 / target);
+    }
+
+    function blowCandle(){
+      const flame = $("#flame");
+
+      if(flame.classList.contains("blown")) return;
+
       flame.classList.add("blown");
-      const smoke = document.createElement("div");
+
+      const smoke = document.createElement("span");
       smoke.className = "smoke";
-      flame.parentElement.appendChild(smoke);
+      $(".candle").append(smoke);
+
+      $("#blowBtn").disabled = true;
+
+      launchBalloons(10);
+
+      setTimeout(() => {
+        goToSlide(2);
+      }, 1000);
     }
- 
-    launchBalloons(24);
- 
-    // let the balloons fly for a bit before moving on
-    setTimeout(nextSlide, 1900);
-  }
- 
-  function launchBalloons(count){
-    const field = document.getElementById("balloonField");
-    const colors = ["#ff5e7e", "#ff9a56", "#ffc17a", "#f4837a", "#c23e5c", "#ffb385"];
- 
-    for (let i = 0; i < count; i++){
-      const b = document.createElement("div");
-      b.className = "balloon";
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      b.style.background =
-        `radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55), ${color} 60%)`;
-      b.style.left = Math.random() * 96 + "%";
-      b.style.setProperty("--drift", (Math.random() * 160 - 80) + "px");
-      b.style.setProperty("--tilt", (Math.random() * 30 - 15) + "deg");
-      const duration = 3.2 + Math.random() * 1.8;
-      const delay = Math.random() * 0.6;
-      b.style.animationDuration = duration + "s";
-      b.style.animationDelay = delay + "s";
-      field.appendChild(b);
- 
-      // clean up after it floats off screen
-      setTimeout(() => b.remove(), (duration + delay) * 1000 + 200);
+
+    function showReason(){
+      const text = $("#reasonText");
+
+      text.style.opacity = 0;
+      text.style.transform = "translateY(6px)";
+
+      setTimeout(() => {
+        text.textContent = reasons[reasonIndex++ % reasons.length];
+        text.style.opacity = 1;
+        text.style.transform = "translateY(0)";
+      }, 180);
+
+      $("#reasonCount").textContent =
+        `${reasonIndex} reason${reasonIndex === 1 ? "" : "s"} revealed`;
     }
-  }
- 
- 
- 
-  // ambient stars
-  (function makeStars(){
-    const container = document.getElementById("stars");
-    const count = 40;
-    for (let i = 0; i < count; i++){
-      const s = document.createElement("span");
-      s.style.top = Math.random() * 100 + "%";
-      s.style.left = Math.random() * 100 + "%";
-      s.style.animationDelay = (Math.random() * 3.5) + "s";
-      container.appendChild(s);
+
+    function unwrapPhoto(index){
+      const card = $$(".photo-card")[index];
+
+      card.classList.add("unwrapped");
+      card.querySelector(".wrap-cover").classList.add("opened");
     }
-  })();
- 
-function cutRibbon(){
-  const stage = document.getElementById("ribbonStage");
-  if (!stage || stage.classList.contains("cut")) return;
-  stage.classList.add("cut");
- 
-  // celebratory burst as the ribbon falls away
-  launchBalloons(12);
- 
-  setTimeout(() => {
-    document.getElementById("slide0").classList.remove("active");
-    document.getElementById("slide1").classList.add("active");
-    const dotsEl = document.getElementById("dots");
-    if (dotsEl) dotsEl.style.display = "flex";
-    countUpAge();
-  }, 700);
-}
- 
-/* ============ gallery gift-unwrap + flip logic ============ */
- 
-function unwrapPhoto(coverEl){
-  if (coverEl.classList.contains("opened")) return;
-  coverEl.classList.add("opened");
-  const card = coverEl.closest(".photo-card");
- 
-  // a little confetti-ish burst so the reveal feels rewarded
-  launchBalloons(6);
- 
-  // the cover swings open on its hinge (like a book) and, thanks to
-  // backface-visibility, disappears from view once past 90° — no need
-  // to hide it manually, it just stays "open"
-  setTimeout(() => {
-    if (card) card.classList.add("unwrapped");
-  }, 650);
-}
- 
-function flipCard(btnEl){
-  const card = btnEl.closest(".photo-card");
-  if (!card || !card.classList.contains("unwrapped")) return;
-  card.classList.toggle("flipped");
-}
- 
-/* ============ end gallery logic ============ */
- /* ============ friendship stats logic ============ */
 
-let statsAnimated = false;
+    function flipCard(index){
+      const card = $$(".photo-card")[index];
 
-function animateStat(id, target, duration){
-  const el = document.getElementById(id);
-  if (!el) return;
-  let value = 0;
-  el.textContent = value;
-  const stepTime = duration / target;
-  const interval = setInterval(() => {
-    value++;
-    el.textContent = value;
-    if (value >= target) clearInterval(interval);
-  }, stepTime);
-}
+      if(card.classList.contains("unwrapped")){
+        card.classList.toggle("flipped");
+      }
+    }
 
-function animateStats(){
-  if (statsAnimated) return;
-  statsAnimated = true;
-  animateStat("stat1", 1, 1200);   // years of friendship — edit target as needed
-  animateStat("stat2", 50, 1800);  // inside jokes — edit target as needed
-}
+    function startQuizIfNeeded(){
+      if(quizStarted) return;
 
-/* ============ end friendship stats logic ============ */
+      quizStarted = true;
+      renderQuizQuestion();
+    }
 
-/* ============ tap for a reason logic (NEW) ============ */
+    function renderQuizQuestion(){
+      const box = $("#quizBox");
 
-// Edit these freely — keep it to 4-5 short, one-line reasons.
-const reasons = [
-  "You make even boring days feel like an adventure.",
-  "You've never once made me feel judged, no matter what.",
-  "You show up, every single time, no questions asked.",
-  "You make me laugh harder than almost anyone else.",
-  "Life is just better with you in it."
-];
+      if(quizIndex >= quiz.length){
+        box.innerHTML = `
+          <div class="quiz-result">
+            You got ${quizScore}/${quiz.length}! 💛
+            <br>
+            <button id="quizNext">Continue</button>
+          </div>
+        `;
 
-let reasonBag = [];
-let lastReasonIndex = -1;
-let reasonTapCount = 0;
+        $("#quizNext").onclick = nextSlide;
+        return;
+      }
 
-function refillReasonBag(){
-  reasonBag = reasons.map((_, i) => i);
-  // simple shuffle
-  for (let i = reasonBag.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [reasonBag[i], reasonBag[j]] = [reasonBag[j], reasonBag[i]];
-  }
-  // avoid repeating the same line back-to-back across refills
-  if (reasonBag[0] === lastReasonIndex && reasonBag.length > 1){
-    [reasonBag[0], reasonBag[1]] = [reasonBag[1], reasonBag[0]];
-  }
-}
+      const question = quiz[quizIndex];
 
-function showReason(){
-  if (reasonBag.length === 0) refillReasonBag();
-  const index = reasonBag.pop();
-  lastReasonIndex = index;
+      box.innerHTML = `
+        <div class="quiz-question">
+          ${quizIndex + 1}. ${question.question}
+        </div>
 
-  const el = document.getElementById("reasonText");
-  const countEl = document.getElementById("reasonCount");
-  if (!el) return;
+        <div class="quiz-options">
+          ${question.options.map((option, i) => `
+            <button class="quiz-option" data-answer="${i}">${option}</button>
+          `).join("")}
+        </div>
 
-  el.classList.add("swap");
-  setTimeout(() => {
-    el.textContent = reasons[index];
-    el.classList.remove("swap");
-  }, 220);
+        <div class="quiz-result" id="quizResult"></div>
+      `;
 
-  reasonTapCount++;
-  if (countEl) countEl.textContent = "reason #" + reasonTapCount;
-}
+      $$("[data-answer]").forEach(button => {
+        button.onclick = () => answerQuiz(Number(button.dataset.answer));
+      });
+    }
 
-/* ============ end tap for a reason logic ============ */
+    function answerQuiz(answer){
+      const question = quiz[quizIndex];
 
-/* ============ memory quiz logic (NEW) ============ */
+      $$("[data-answer]").forEach(button => {
+        button.disabled = true;
 
-// Edit the questions, options, and correctIndex (0-based) to match your real memories.
-const quizQuestions = [
-  {
-    question: "Where did we meet first?"
-    option: ["NYIT, St.Francis College, Harrision Path Station, None of the above"],
-    correctIndex: 2
-  },
-  {
-    question: "Where did we first mess up an order together?",
-    options: ["Applebee's", "McDonald's", "Chipotle", "Taco Bell"],
-    correctIndex: 0
-  },
-  {
-    question: "What do we always end up talking about for way too long?",
-    options: ["Movies", "Random memes", "Life plans", "Food"],
-    correctIndex: 1
-  },
-  {
-    question: "Pick the word that best describes our friendship.",
-    options: ["Chaotic", "Loyal", "Hilarious", "All of the above"],
-    correctIndex: 3
-  }
-];
+        const optionIndex = Number(button.dataset.answer);
 
-let quizIndex = 0;
-let quizScore = 0;
-let quizStarted = false;
+        if(optionIndex === question.correctIndex){
+          button.classList.add("correct");
+        } else if(optionIndex === answer){
+          button.classList.add("wrong");
+        }
+      });
 
-function renderQuizQuestion(){
-  const box = document.getElementById("quizBox");
-  const progress = document.getElementById("quizProgress");
-  if (!box) return;
+      if(answer === question.correctIndex){
+        quizScore++;
+      }
 
-  if (quizIndex >= quizQuestions.length){
-    const perfect = quizScore === quizQuestions.length;
-    box.innerHTML = "";
+      $("#quizResult").textContent =
+        answer === question.correctIndex
+          ? "Correct! 🎉"
+          : "Good try — the highlighted answer is right!";
 
-    const result = document.createElement("div");
-    result.className = "quiz-result";
-    result.textContent = `You scored ${quizScore}/${quizQuestions.length} — ${perfect ? "you know us perfectly! 💛" : "close enough, still my favorite person 💛"}`;
-    box.appendChild(result);
+      setTimeout(() => {
+        quizIndex++;
+        renderQuizQuestion();
+      }, 1050);
+    }
 
-    const btn = document.createElement("button");
-    btn.textContent = "Continue";
-    btn.onclick = nextSlide;
-    box.appendChild(btn);
+    function animateStat(id, target, duration){
+      const element = $("#" + id);
+      const start = performance.now();
 
-    if (progress) progress.textContent = "";
-    return;
-  }
+      function frame(now){
+        const progress = Math.min((now - start) / duration, 1);
 
-  const q = quizQuestions[quizIndex];
-  if (progress) progress.textContent = `Question ${quizIndex + 1} of ${quizQuestions.length}`;
+        element.textContent =
+          Math.floor(progress * target) +
+          (id === "stat1" ? " year" : "+");
 
-  box.innerHTML = `
-    <div class="quiz-question">${q.question}</div>
-    <div class="quiz-options">
-      ${q.options.map((opt, i) => `<div class="quiz-option" data-index="${i}">${opt}</div>`).join("")}
-    </div>
-    <div class="quiz-feedback" id="quizFeedback"></div>
-  `;
+        if(progress < 1){
+          requestAnimationFrame(frame);
+        }
+      }
 
-  const optionEls = box.querySelectorAll(".quiz-option");
-  optionEls.forEach(el => {
-    el.addEventListener("click", () => handleQuizAnswer(el, q));
-  });
-}
+      requestAnimationFrame(frame);
+    }
 
-function handleQuizAnswer(el, q){
-  const box = document.getElementById("quizBox");
-  const optionEls = box.querySelectorAll(".quiz-option");
-  const chosenIndex = parseInt(el.getAttribute("data-index"), 10);
-  const feedback = document.getElementById("quizFeedback");
+    function animateStats(){
+      if(statsAnimated) return;
 
-  optionEls.forEach(o => o.classList.add("disabled"));
+      statsAnimated = true;
 
-  if (chosenIndex === q.correctIndex){
-    el.classList.add("correct");
-    quizScore++;
-    if (feedback) feedback.textContent = "Nailed it 🎯";
-  } else {
-    el.classList.add("incorrect");
-    optionEls[q.correctIndex].classList.add("correct");
-    if (feedback) feedback.textContent = "Close! Not quite 😅";
-  }
+      animateStat("stat1", 1, 900);
+      animateStat("stat2", 50, 1400);
+      animateStat("stat3", 100, 1700);
+    }
 
-  setTimeout(() => {
-    quizIndex++;
-    renderQuizQuestion();
-  }, 1100);
-}
+    function restartExperience(){
+      clearInterval(ageTimer);
 
-function startQuizIfNeeded(){
-  if (quizStarted) return;
-  quizStarted = true;
-  renderQuizQuestion();
-}
+      $$(".slide").forEach(slide => slide.classList.remove("active"));
 
-/* ============ end memory quiz logic ============ */
+      current = 0;
+      $("#slide0").classList.add("active");
 
+      $("#ribbonStage").classList.remove("cut");
+      $("#flame").classList.remove("blown");
+      $("#blowBtn").disabled = false;
 
-function restartExperience(){
-  candleBlown = false;
-  const flame = document.getElementById("flame");
-  const blowBtn = document.getElementById("blowBtn");
-  if (flame) flame.classList.remove("blown");
-  if (blowBtn) blowBtn.disabled = false;
- 
-  const oldSmoke = document.querySelector(".smoke");
-  if (oldSmoke) oldSmoke.remove();
- 
-  goToSlide(1);
-  countUpAge();   // ← new line
-}
- 
-let touchStartX = 0;
-document.addEventListener("touchstart", (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-document.addEventListener("touchend", (e) => {
-  const touchEndX = e.changedTouches[0].screenX;
-  const diff = touchEndX - touchStartX;
-  if (Math.abs(diff) < 50) return; // ignore small/accidental movements
-  if (diff < 0){
-    goToSlide(current + 1); // swipe left → next
-  } else {
-    goToSlide(current - 1); // swipe right → previous
-  }
-});
- 
- 
-renderDots();
-document.getElementById("dots").style.display = "none";
- 
-</script>
- 
+      quizIndex = 0;
+      quizScore = 0;
+      quizStarted = false;
+
+      statsAnimated = false;
+      reasonIndex = 0;
+
+      $("#reasonText").textContent = "Tap below to reveal a reason ✨";
+      $("#reasonCount").textContent = "";
+
+      ["stat1", "stat2", "stat3"].forEach(id => {
+        $("#" + id).textContent = "0";
+      });
+
+      $$(".photo-card").forEach(card => {
+        card.classList.remove("unwrapped", "flipped");
+      });
+
+      renderDots();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    makeStars();
+    renderGallery();
+    renderDots();
+
+    $("#ribbonStage").onclick = cutRibbon;
+
+    $("#ribbonStage").onkeydown = event => {
+      if(event.key === "Enter" || event.key === " "){
+        cutRibbon();
+      }
+    };
+
+    $("#candleWrap").onclick = blowCandle;
+    $("#blowBtn").onclick = blowCandle;
+    $("#reasonBtn").onclick = showReason;
+    $("#restartBtn").onclick = restartExperience;
+
+    document.addEventListener("click", event => {
+      if(event.target.closest("[data-next]")){
+        nextSlide();
+      }
+
+      const unwrapButton = event.target.closest("[data-unwrap]");
+      if(unwrapButton){
+        unwrapPhoto(Number(unwrapButton.dataset.unwrap));
+      }
+
+      const flipButton = event.target.closest("[data-flip]");
+      if(flipButton){
+        flipCard(Number(flipButton.dataset.flip));
+      }
+    });
+
+    let touchStart = 0;
+
+    document.addEventListener("touchstart", event => {
+      touchStart = event.changedTouches[0].clientX;
+    }, { passive:true });
+
+    document.addEventListener("touchend", event => {
+      const distance = event.changedTouches[0].clientX - touchStart;
+
+      if(Math.abs(distance) > 60 && current > 0){
+        if(distance < 0){
+          nextSlide();
+        } else {
+          goToSlide(current - 1);
+        }
+      }
+    }, { passive:true });
+  </script>
 </body>
 </html>
- 
-
-
