@@ -431,7 +431,201 @@ button:disabled:hover{
   }
  
   /* ============ end gallery styles ============ */
- 
+
+
+ /* ============ friendship stats slide ============ */
+
+  .stats-grid{
+    display:flex;
+    justify-content:center;
+    gap:36px;
+    margin-top:44px;
+    flex-wrap:wrap;
+  }
+
+  .stat-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-width:130px;
+  }
+
+  .stat-num{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:clamp(40px, 7vw, 58px);
+    color:var(--gold);
+    line-height:1;
+    text-shadow:0 0 18px rgba(255,154,86,0.4);
+  }
+
+  .stat-label{
+    margin-top:8px;
+    font-size:15px;
+    color:rgba(246,239,227,0.78);
+    letter-spacing:0.02em;
+    max-width:150px;
+  }
+
+  /* ============ gift teaser slide ============ */
+
+  .gift-teaser{
+    display:flex;
+    justify-content:center;
+    margin:36px 0 6px;
+  }
+
+  .gift-teaser-emoji{
+    font-size:72px;
+    display:inline-block;
+    animation:giftBounce 1.8s ease-in-out infinite;
+    filter:drop-shadow(0 14px 22px rgba(0,0,0,0.4));
+  }
+
+  /* ============ end new slide styles ============ */
+
+  /* ============ tap for a reason ============ */
+
+  .reason-box{
+    margin:34px auto 0;
+    max-width:520px;
+    min-height:96px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:26px 30px;
+    border-radius:16px;
+    background:rgba(242,181,68,0.07);
+    border:1px solid var(--line);
+  }
+
+  .reason-box p{
+    margin:0;
+    max-width:none;
+    font-size:19px;
+    color:var(--gold-soft);
+    line-height:1.6;
+    transition:opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .reason-box p.swap{
+    opacity:0;
+    transform:translateY(6px);
+  }
+
+  .reason-tap-count{
+    margin-top:12px;
+    font-size:13px;
+    color:rgba(246,239,227,0.5);
+    letter-spacing:0.04em;
+  }
+
+  /* ============ end tap for a reason ============ */
+
+/* ============ memory quiz ============ */
+
+  .quiz-box{
+    margin:34px auto 0;
+    max-width:560px;
+    text-align:left;
+  }
+
+  .quiz-question{
+    font-size:20px;
+    color:var(--paper);
+    margin-bottom:18px;
+    text-align:center;
+    font-family:'Caveat',cursive;
+    font-weight:600;
+  }
+
+  .quiz-options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .quiz-option{
+    font-family:'Caveat',cursive;
+    font-size:17px;
+    padding:14px 20px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.05);
+    color:var(--paper);
+    cursor:pointer;
+    text-align:center;
+    transition:0.25s ease;
+  }
+
+  .quiz-option:hover{
+    background:rgba(242,181,68,0.14);
+    transform:translateY(-2px);
+  }
+
+  .quiz-option.correct{
+    background:rgba(120,200,140,0.22);
+    border-color:#78c88c;
+  }
+
+  .quiz-option.incorrect{
+    background:rgba(255,94,126,0.2);
+    border-color:var(--coral);
+  }
+
+  .quiz-option.disabled{
+    pointer-events:none;
+    opacity:0.9;
+  }
+
+  .quiz-feedback{
+    margin-top:14px;
+    font-size:15px;
+    color:var(--gold-soft);
+    text-align:center;
+    min-height:20px;
+  }
+
+  .quiz-progress{
+    margin-top:18px;
+    font-size:13px;
+    color:rgba(246,239,227,0.5);
+    text-align:center;
+    letter-spacing:0.04em;
+  }
+
+  .quiz-result{
+    font-size:21px;
+    color:var(--gold);
+    text-align:center;
+    font-family:'Caveat',cursive;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+
+  .quiz-box button{
+    display:block;
+    margin:8px auto 0;
+  }
+
+  /* ============ end memory quiz ============ */
+ /* ============ cursor sparkle trail ============ */
+
+  .sparkle{
+    position:fixed;
+    pointer-events:none;
+    z-index:8;
+    border-radius:50%;
+    background:radial-gradient(circle, #fff6d8, var(--gold) 55%, transparent 72%);
+    animation:sparkleFade 0.85s ease-out forwards;
+  }
+
+  @keyframes sparkleFade{
+    0%{ transform:translate(-50%,-50%) scale(1); opacity:0.9; }
+    100%{ transform:translate(-50%,-50%) translateY(-26px) scale(0.2); opacity:0; }
+  }
+
+  /* ============ end cursor sparkle trail ============ */
   /* progress dots */
   .dots{
     display:flex;
@@ -594,6 +788,20 @@ Happy Birthday to one of the most amazing friend I know.
     </p>
     <button onclick="nextSlide()">Keep going</button>
   </div>
+ <!-- Slide 3: Tap for a Reason (NEW) -->
+  <div class="slide" id="slide3">
+    <div class="eyebrow">In case you needed reminding</div>
+    <h1 style="font-size:clamp(30px,5vw,44px);">Reasons I <span class="accent">appreciate you</span></h1>
+    <p>Tap the button as many times as you like 💛</p>
+    <div class="reason-box">
+      <p id="reasonText">Tap below to reveal a reason ✨</p>
+    </div>
+    <div class="" id="reasonCount"></div>
+    <button onclick="showReason()">Tap for a reason 💛</button>
+    <br>
+    <button onclick="nextSlide()" style="opacity:0.7;">Continue</button>
+  </div>
+
  
   <!-- Slide 3 -->
   <div class="slide" id="slide3">
@@ -684,6 +892,52 @@ Happy Birthday to one of the most amazing friend I know.
     </div>
     <button onclick="nextSlide()">Continue 🎁</button>
   </div>
+
+ <!-- Slide 5: Memory Quiz (NEW) -->
+  <div class="slide" id="slide5">
+    <div class="eyebrow">Test time</div>
+    <h1 style="font-size:clamp(30px,5vw,44px);">How well do <span class="accent">you know us?</span></h1>
+    <p>A few questions before the next reveal 👀</p>
+    <div class="quiz-box" id="quizBox"></div>
+    <div class="quiz-progress" id="quizProgress"></div>
+  </div>
+
+  <!-- Slide 6: Friendship Stats (was slide 5) -->
+  <div class="slide" id="slide6">
+    <div class="eyebrow">A little math</div>
+    <h1 style="font-size:clamp(30px,5vw,44px);">By the <span class="accent">numbers</span></h1>
+    <p>Some very official, very scientific friendship stats 📊</p>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-num" id="stat1">0</span>
+        <span class="stat-label">years of friendship</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="stat2">0</span>
+        <span class="stat-label">inside jokes and counting</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">Walmart's visits</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">best friend status</span>
+      </div>
+    </div>
+    <button onclick="nextSlide()">Continue</button>
+  </div>
+
+  <!-- Slide 7: Gift Teaser (was slide 6) -->
+  <div class="slide" id="slide7">
+    <div class="eyebrow">Not just this</div>
+    <h1 style="font-size:clamp(30px,5vw,44px);">The real gift is <span class="accent">on its way</span> 📦</h1>
+    <div class="gift-teaser">
+      <span class="gift-teaser-emoji">🎁</span>
+    </div>
+    <p>This page is only half the surprise. Some gifts are on your way — keep an eye out 👀</p>
+    <button onclick="nextSlide()">Continue</button>
+  </div>
  
   <!-- Slide 5 (was slide 6) -->
   <div class="slide" id="slide5">
@@ -701,7 +955,7 @@ Happy Birthday to one of the most amazing friend I know.
 <!----Javascript---->
  
 <script>
-  const totalSlides = 5;
+  const totalSlides = 8;
   let current = 1;
  
   function countUpAge(){
@@ -848,7 +1102,184 @@ function flipCard(btnEl){
 }
  
 /* ============ end gallery logic ============ */
- 
+ /* ============ friendship stats logic ============ */
+
+let statsAnimated = false;
+
+function animateStat(id, target, duration){
+  const el = document.getElementById(id);
+  if (!el) return;
+  let value = 0;
+  el.textContent = value;
+  const stepTime = duration / target;
+  const interval = setInterval(() => {
+    value++;
+    el.textContent = value;
+    if (value >= target) clearInterval(interval);
+  }, stepTime);
+}
+
+function animateStats(){
+  if (statsAnimated) return;
+  statsAnimated = true;
+  animateStat("stat1", 1, 1200);   // years of friendship — edit target as needed
+  animateStat("stat2", 50, 1800);  // inside jokes — edit target as needed
+}
+
+/* ============ end friendship stats logic ============ */
+
+/* ============ tap for a reason logic (NEW) ============ */
+
+// Edit these freely — keep it to 4-5 short, one-line reasons.
+const reasons = [
+  "You make even boring days feel like an adventure.",
+  "You've never once made me feel judged, no matter what.",
+  "You show up, every single time, no questions asked.",
+  "You make me laugh harder than almost anyone else.",
+  "Life is just better with you in it."
+];
+
+let reasonBag = [];
+let lastReasonIndex = -1;
+let reasonTapCount = 0;
+
+function refillReasonBag(){
+  reasonBag = reasons.map((_, i) => i);
+  // simple shuffle
+  for (let i = reasonBag.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [reasonBag[i], reasonBag[j]] = [reasonBag[j], reasonBag[i]];
+  }
+  // avoid repeating the same line back-to-back across refills
+  if (reasonBag[0] === lastReasonIndex && reasonBag.length > 1){
+    [reasonBag[0], reasonBag[1]] = [reasonBag[1], reasonBag[0]];
+  }
+}
+
+function showReason(){
+  if (reasonBag.length === 0) refillReasonBag();
+  const index = reasonBag.pop();
+  lastReasonIndex = index;
+
+  const el = document.getElementById("reasonText");
+  const countEl = document.getElementById("reasonCount");
+  if (!el) return;
+
+  el.classList.add("swap");
+  setTimeout(() => {
+    el.textContent = reasons[index];
+    el.classList.remove("swap");
+  }, 220);
+
+  reasonTapCount++;
+  if (countEl) countEl.textContent = "reason #" + reasonTapCount;
+}
+
+/* ============ end tap for a reason logic ============ */
+
+/* ============ memory quiz logic (NEW) ============ */
+
+// Edit the questions, options, and correctIndex (0-based) to match your real memories.
+const quizQuestions = [
+  {
+    question: "Where did we meet first?"
+    option: ["NYIT, St.Francis College, Harrision Path Station, None of the above"],
+    correctIndex: 2
+  },
+  {
+    question: "Where did we first mess up an order together?",
+    options: ["Applebee's", "McDonald's", "Chipotle", "Taco Bell"],
+    correctIndex: 0
+  },
+  {
+    question: "What do we always end up talking about for way too long?",
+    options: ["Movies", "Random memes", "Life plans", "Food"],
+    correctIndex: 1
+  },
+  {
+    question: "Pick the word that best describes our friendship.",
+    options: ["Chaotic", "Loyal", "Hilarious", "All of the above"],
+    correctIndex: 3
+  }
+];
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizStarted = false;
+
+function renderQuizQuestion(){
+  const box = document.getElementById("quizBox");
+  const progress = document.getElementById("quizProgress");
+  if (!box) return;
+
+  if (quizIndex >= quizQuestions.length){
+    const perfect = quizScore === quizQuestions.length;
+    box.innerHTML = "";
+
+    const result = document.createElement("div");
+    result.className = "quiz-result";
+    result.textContent = `You scored ${quizScore}/${quizQuestions.length} — ${perfect ? "you know us perfectly! 💛" : "close enough, still my favorite person 💛"}`;
+    box.appendChild(result);
+
+    const btn = document.createElement("button");
+    btn.textContent = "Continue";
+    btn.onclick = nextSlide;
+    box.appendChild(btn);
+
+    if (progress) progress.textContent = "";
+    return;
+  }
+
+  const q = quizQuestions[quizIndex];
+  if (progress) progress.textContent = `Question ${quizIndex + 1} of ${quizQuestions.length}`;
+
+  box.innerHTML = `
+    <div class="quiz-question">${q.question}</div>
+    <div class="quiz-options">
+      ${q.options.map((opt, i) => `<div class="quiz-option" data-index="${i}">${opt}</div>`).join("")}
+    </div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+  `;
+
+  const optionEls = box.querySelectorAll(".quiz-option");
+  optionEls.forEach(el => {
+    el.addEventListener("click", () => handleQuizAnswer(el, q));
+  });
+}
+
+function handleQuizAnswer(el, q){
+  const box = document.getElementById("quizBox");
+  const optionEls = box.querySelectorAll(".quiz-option");
+  const chosenIndex = parseInt(el.getAttribute("data-index"), 10);
+  const feedback = document.getElementById("quizFeedback");
+
+  optionEls.forEach(o => o.classList.add("disabled"));
+
+  if (chosenIndex === q.correctIndex){
+    el.classList.add("correct");
+    quizScore++;
+    if (feedback) feedback.textContent = "Nailed it 🎯";
+  } else {
+    el.classList.add("incorrect");
+    optionEls[q.correctIndex].classList.add("correct");
+    if (feedback) feedback.textContent = "Close! Not quite 😅";
+  }
+
+  setTimeout(() => {
+    quizIndex++;
+    renderQuizQuestion();
+  }, 1100);
+}
+
+function startQuizIfNeeded(){
+  if (quizStarted) return;
+  quizStarted = true;
+  renderQuizQuestion();
+}
+
+/* ============ end memory quiz logic ============ */
+
+
 function restartExperience(){
   candleBlown = false;
   const flame = document.getElementById("flame");
